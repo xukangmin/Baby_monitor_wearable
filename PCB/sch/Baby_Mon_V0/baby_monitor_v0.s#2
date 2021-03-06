@@ -2898,6 +2898,9 @@ Standard 0603 ceramic capacitor, and 0.1" leaded capacitor.</description>
 <part name="GND6" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="U2" library="graftel-internal-ic" deviceset="MAX30101EFD+" device=""/>
 <part name="U3" library="graftel-internal-ic" deviceset="MAX30205MTA+" device=""/>
+<part name="L5" library="SparkFun-Passives" deviceset="INDUCTOR" device="0402" value="2.2nH"/>
+<part name="C8" library="SparkFun-Capacitors" deviceset="CAP" device="0402-CAP" value="0.7pF"/>
+<part name="GND7" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -3164,6 +3167,17 @@ Standard 0603 ceramic capacitor, and 0.1" leaded capacitor.</description>
 <instance part="GND6" gate="1" x="20.32" y="109.22" smashed="yes">
 <attribute name="VALUE" x="17.78" y="106.68" size="1.778" layer="96"/>
 </instance>
+<instance part="L5" gate="G$1" x="78.74" y="109.22" smashed="yes" rot="R90">
+<attribute name="NAME" x="73.66" y="111.76" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="83.82" y="111.76" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="C8" gate="G$1" x="88.9" y="106.68" smashed="yes" rot="R270">
+<attribute name="NAME" x="91.821" y="105.156" size="1.778" layer="95" rot="R270"/>
+<attribute name="VALUE" x="86.741" y="105.156" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="GND7" gate="1" x="96.52" y="104.14" smashed="yes">
+<attribute name="VALUE" x="93.98" y="101.6" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -3220,6 +3234,11 @@ Standard 0603 ceramic capacitor, and 0.1" leaded capacitor.</description>
 <wire x1="30.48" y1="106.68" x2="63.5" y2="106.68" width="0.1524" layer="91"/>
 <wire x1="63.5" y1="106.68" x2="63.5" y2="114.3" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="C8" gate="G$1" pin="1"/>
+<pinref part="GND7" gate="1" pin="GND"/>
+<wire x1="93.98" y1="106.68" x2="96.52" y2="106.68" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="N$10" class="0">
 <segment>
@@ -3237,6 +3256,16 @@ Standard 0603 ceramic capacitor, and 0.1" leaded capacitor.</description>
 <wire x1="17.78" y1="124.46" x2="99.06" y2="124.46" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$4" pin="XC2"/>
 <wire x1="99.06" y1="124.46" x2="99.06" y2="119.38" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$12" class="0">
+<segment>
+<pinref part="U1" gate="G$4" pin="ANT"/>
+<pinref part="L5" gate="G$1" pin="2"/>
+<wire x1="99.06" y1="109.22" x2="86.36" y2="109.22" width="0.1524" layer="91"/>
+<pinref part="C8" gate="G$1" pin="2"/>
+<wire x1="86.36" y1="109.22" x2="86.36" y2="106.68" width="0.1524" layer="91"/>
+<junction x="86.36" y="109.22"/>
 </segment>
 </net>
 </nets>
