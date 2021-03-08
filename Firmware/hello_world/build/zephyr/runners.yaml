@@ -1,0 +1,51 @@
+# Available runners configured by board.cmake.
+runners:
+- nrfjprog
+- jlink
+- pyocd
+- openocd
+
+# Default flash runner if --runner is not given.
+flash-runner: nrfjprog
+
+# Default debug runner if --runner is not given.
+debug-runner: jlink
+
+# Common runner configuration values.
+config:
+  board_dir: C:/Users/kangmin/ncs/v1.5.0/zephyr/boards/arm/nrf52dk_nrf52832
+  # Build outputs:
+  elf_file: zephyr.elf
+  hex_file: zephyr.hex
+  bin_file: zephyr.bin
+  # Host tools:
+  gdb: C:/Users/kangmin/ncs/v1.5.0/toolchain/opt/bin/arm-none-eabi-gdb.exe
+
+# Runner specific arguments
+args:
+  nrfjprog:
+    []
+
+  jlink:
+    - --dt-flash=y
+    - --device=nrf52
+    - --speed=4000
+  pyocd:
+    - --dt-flash=y
+    - --target=nrf52
+    - --frequency=4000000
+  openocd:
+    - --cmd-load
+    - flash write_image erase
+    - --cmd-verify
+    - verify_image
+    - --cmd-pre-init
+    - set WORKAREASIZE 0x4000
+    - --cmd-pre-init
+    - source [find interface/jlink.cfg]
+    - --cmd-pre-init
+    - transport select swd
+    - --cmd-pre-init
+    - source [find target/nrf52.cfg]
+    - --cmd-pre-init
+    - $_TARGETNAME configure -rtos auto

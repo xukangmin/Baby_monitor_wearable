@@ -1,0 +1,3 @@
+"BOARD_ROOT":"C:/Users/kangmin/ncs/v1.5.0/nrf"
+"DTS_ROOT":"C:/Users/kangmin/ncs/v1.5.0/nrf"
+"MODULE_EXT_ROOT":"C:/Users/kangmin/ncs/v1.5.0/nrf"
