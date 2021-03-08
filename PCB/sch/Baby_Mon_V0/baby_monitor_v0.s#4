@@ -4023,6 +4023,9 @@ IPC Nominal Density</description>
 <wire x1="22.86" y1="96.52" x2="27.94" y2="96.52" width="0.1524" layer="91"/>
 <wire x1="27.94" y1="96.52" x2="27.94" y2="101.6" width="0.1524" layer="91"/>
 <junction x="27.94" y="101.6"/>
+<pinref part="R4" gate="G$1" pin="2"/>
+<wire x1="22.86" y1="111.76" x2="22.86" y2="106.68" width="0.1524" layer="91"/>
+<junction x="22.86" y="106.68"/>
 </segment>
 <segment>
 <pinref part="SUPPLY8" gate="G$1" pin="3.3V"/>
@@ -4195,8 +4198,12 @@ IPC Nominal Density</description>
 <net name="OS" class="0">
 <segment>
 <pinref part="U3" gate="A" pin="OS"/>
-<wire x1="20.32" y1="132.08" x2="10.16" y2="132.08" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="132.08" x2="12.7" y2="132.08" width="0.1524" layer="91"/>
 <label x="12.7" y="132.08" size="1.778" layer="95"/>
+<pinref part="R4" gate="G$1" pin="1"/>
+<wire x1="12.7" y1="132.08" x2="10.16" y2="132.08" width="0.1524" layer="91"/>
+<wire x1="12.7" y1="111.76" x2="12.7" y2="132.08" width="0.1524" layer="91"/>
+<junction x="12.7" y="132.08"/>
 </segment>
 </net>
 </nets>

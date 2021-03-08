@@ -3474,6 +3474,7 @@ IPC Nominal Density</description>
 <part name="SUPPLY7" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="GND13" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="C13" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" value="0.1uF"/>
+<part name="SUPPLY8" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -3977,6 +3978,9 @@ IPC Nominal Density</description>
 <instance part="C13" gate="G$1" x="38.1" y="149.86" smashed="yes" rot="R90">
 <attribute name="NAME" x="36.85" y="147.57" size="1.27" layer="95" font="vector" rot="R180" align="center"/>
 <attribute name="VALUE" x="36.85" y="152.16" size="1.27" layer="96" font="vector" rot="R180" align="center"/>
+</instance>
+<instance part="SUPPLY8" gate="G$1" x="27.94" y="152.4" smashed="yes">
+<attribute name="VALUE" x="26.924" y="155.956" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>

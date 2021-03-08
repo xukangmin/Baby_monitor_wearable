@@ -1565,14 +1565,14 @@ Please make sure your boards conform to these design rules.
 <vertex x="-7.3406" y="-0.9652"/>
 </polygon>
 <polygon width="0.127" layer="1">
-<vertex x="-4.1656" y="15.8242"/>
-<vertex x="4.3942" y="15.8242"/>
+<vertex x="-7.2644" y="16.002"/>
+<vertex x="4.3942" y="16.002"/>
 <vertex x="4.3942" y="12.9032"/>
 <vertex x="6.5024" y="12.9032"/>
 <vertex x="6.5024" y="15.9512"/>
 <vertex x="16.2814" y="15.9512"/>
 <vertex x="16.2814" y="-0.9652"/>
-<vertex x="-4.1656" y="-0.9652"/>
+<vertex x="-7.2644" y="-0.9652"/>
 </polygon>
 </signal>
 <signal name="N$1">

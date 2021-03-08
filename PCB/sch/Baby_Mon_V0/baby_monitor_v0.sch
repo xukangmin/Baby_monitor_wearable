@@ -3448,12 +3448,12 @@ IPC Nominal Density</description>
 <part name="GND5" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="X1" library="graftel-internal-ic" deviceset="XRCGB32M000F2P10R0" device=""/>
 <part name="GND6" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="U2" library="graftel-internal-ic" deviceset="MAX30101EFD+" device=""/>
-<part name="U3" library="graftel-internal-ic" deviceset="MAX30205MTA+" device=""/>
+<part name="U2" library="graftel-internal-ic" deviceset="MAX30101EFD+" device="" override_package3d_urn="urn:adsk.eagle:package:27347799/3" override_package_urn="urn:adsk.eagle:footprint:27347800/1"/>
+<part name="U3" library="graftel-internal-ic" deviceset="MAX30205MTA+" device="" override_package3d_urn="urn:adsk.eagle:package:27347977/2" override_package_urn="urn:adsk.eagle:footprint:27347978/1"/>
 <part name="L5" library="Adafruit Circuit Playground Bluefruit" deviceset="NORDIC_MISC_INDUCTOR" device="_0402_N" value="2.2nH"/>
 <part name="C8" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" value="0.7pF"/>
 <part name="GND7" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="J1" library="graftel-internal-ic" deviceset="BATT-COIN1" device="CR1216"/>
+<part name="J1" library="graftel-internal-ic" deviceset="BATT-COIN1" device="CR1216" override_package3d_urn="urn:adsk.eagle:package:27347996/2" override_package_urn="urn:adsk.eagle:footprint:27347997/1"/>
 <part name="X2" library="graftel-internal-ic" deviceset="ADAFRUIT_WIRELESS_ANTENNA_JOHANSON_2450AT18B100" device=""/>
 <part name="C9" library="graftel-internal-ic" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP"/>
 <part name="GND8" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
@@ -3465,7 +3465,7 @@ IPC Nominal Density</description>
 <part name="GND10" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="SUPPLY5" library="SparkFun-Aesthetics" deviceset="1.8V" device=""/>
 <part name="SUPPLY6" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
-<part name="C12" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" value="0.1uF"/>
+<part name="C12" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" override_package3d_urn="urn:adsk.eagle:package:27347947/2" override_package_urn="urn:adsk.eagle:footprint:27347948/1" value="0.1uF"/>
 <part name="GND11" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND12" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="R1" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_RESISTOR" device="_0402MP" value="4.7K"/>
@@ -3475,7 +3475,7 @@ IPC Nominal Density</description>
 <part name="GND13" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="C13" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" value="0.1uF"/>
 <part name="SUPPLY8" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
-<part name="R4" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_RESISTOR" device="_0402MP"/>
+<part name="R4" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_RESISTOR" device="_0402MP" override_package3d_urn="urn:adsk.eagle:package:27347952/2" override_package_urn="urn:adsk.eagle:footprint:27347953/1"/>
 </parts>
 <sheets>
 <sheet>

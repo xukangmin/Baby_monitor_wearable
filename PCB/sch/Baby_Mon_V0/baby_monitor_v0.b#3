@@ -1582,7 +1582,6 @@ Please make sure your boards conform to these design rules.
 <contactref element="U1" pad="AA31"/>
 <contactref element="J11" pad="P$1"/>
 <wire x1="6.985" y1="13.208" x2="6.996" y2="13.214" width="0.127" layer="1"/>
-<wire x1="11.811" y1="15.875" x2="11.8161" y2="15.921678125" width="0.127" layer="1"/>
 <wire x1="11.8161" y1="15.921678125" x2="11.824" y2="15.994" width="0.127" layer="1"/>
 <wire x1="6.996" y1="13.214" x2="6.996" y2="13.74459375" width="0.127" layer="1"/>
 <wire x1="6.996" y1="13.74459375" x2="7.320375" y2="14.06896875" width="0.127" layer="1"/>

@@ -186,6 +186,7 @@
 <layer number="255" name="routoute" color="7" fill="1" visible="yes" active="yes"/>
 </layers>
 <board>
+<fusionsync huburn="a.cGVyc29uYWw6dWUyYjQ5ZjQz" projecturn="a.cGVyc29uYWw6dWUyYjQ5ZjQzIzIwMjEwMzA2MzkwMTczMDgx" f3durn="urn:adsk.wipprod:dm.lineage:iVzpsYOMSI2hBh7b5AEoTA" pcbguid="" lastpulledtime="" lastsyncedchangeguid="" latestrevisionid="f0b70739-3d8e-4c85-a73a-cd5e01b2eb7c" lastsyncedrevisionid="f0b70739-3d8e-4c85-a73a-cd5e01b2eb7c" lastboardhashguid="55a2c731-7c7b-9182-1f93-21125e64b6af" lastpushedtime="2021-03-08T03:18:38Z" linktopcb3d="true"/>
 <plain>
 <circle x="5.842" y="9.398" radius="10" width="0.0762" layer="20"/>
 <circle x="5.8" y="12.1" radius="6.25" width="0.0762" layer="52"/>
@@ -1931,4 +1932,11 @@ Please make sure your boards conform to these design rules.
 </errors>
 </board>
 </drawing>
+<compatibility>
+<note version="8.3" severity="warning">
+Since Version 8.3, EAGLE supports Fusion synchronisation.
+This feature will not be available in this version and saving
+the document will break the link to the Fusion PCB feature.
+</note>
+</compatibility>
 </eagle>

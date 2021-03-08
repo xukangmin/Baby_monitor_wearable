@@ -1574,6 +1574,9 @@ Please make sure your boards conform to these design rules.
 <vertex x="16.2814" y="-0.9652"/>
 <vertex x="-7.2644" y="-0.9652"/>
 </polygon>
+<via x="11.3538" y="14.0208" extent="1-16" drill="0.3048"/>
+<via x="12.827" y="13.97" extent="1-16" drill="0.3048"/>
+<wire x1="7.62" y1="14.478" x2="11.3538" y2="14.0208" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$1">
 <contactref element="U1" pad="AA31"/>
@@ -1899,6 +1902,9 @@ Please make sure your boards conform to these design rules.
 <via x="8.509" y="1.524" extent="1-16" drill="0.3048"/>
 <via x="0.127" y="5.207" extent="1-16" drill="0.3048"/>
 <via x="0.127" y="13.97" extent="1-16" drill="0.3048"/>
+</signal>
+<signal name="N$16">
+<via x="14.4272" y="8.0772" extent="1-16" drill="0.3048"/>
 </signal>
 </signals>
 <mfgpreviewcolors>

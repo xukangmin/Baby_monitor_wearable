@@ -1727,7 +1727,7 @@ Please make sure your boards conform to these design rules.
 <wire x1="4.953" y1="15.621" x2="5.969" y2="15.621" width="0.127" layer="1"/>
 <wire x1="5.969" y1="15.621" x2="5.992" y2="15.6" width="0.127" layer="1"/>
 <wire x1="4.953" y1="15.621" x2="4.894" y2="15.624" width="0.127" layer="1"/>
-<wire x1="4.826" y1="17.653" x2="4.826" y2="15.748" width="0.127" layer="1"/>
+<wire x1="4.826" y1="17.653" x2="4.826" y2="15.748" width="0.508" layer="1"/>
 <wire x1="4.826" y1="15.748" x2="4.894" y2="15.624" width="0.127" layer="1"/>
 <wire x1="4.826" y1="17.653" x2="4.8" y2="17.7" width="0.127" layer="1"/>
 </signal>

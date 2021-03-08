@@ -1576,7 +1576,7 @@ Please make sure your boards conform to these design rules.
 </polygon>
 <via x="11.3538" y="14.0208" extent="1-16" drill="0.3048"/>
 <via x="12.827" y="13.97" extent="1-16" drill="0.3048"/>
-<wire x1="7.62" y1="14.478" x2="11.3538" y2="14.0208" width="0" layer="19" extent="1-1"/>
+<via x="8.1788" y="15.621" extent="1-16" drill="0.3048"/>
 </signal>
 <signal name="N$1">
 <contactref element="U1" pad="AA31"/>

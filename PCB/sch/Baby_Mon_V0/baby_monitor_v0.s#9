@@ -3465,7 +3465,7 @@ IPC Nominal Density</description>
 <part name="GND10" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="SUPPLY5" library="SparkFun-Aesthetics" deviceset="1.8V" device=""/>
 <part name="SUPPLY6" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
-<part name="C12" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP"/>
+<part name="C12" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" value="0.1uF"/>
 <part name="GND11" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND12" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="R1" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_RESISTOR" device="_0402MP" value="4.7K"/>
@@ -3473,7 +3473,7 @@ IPC Nominal Density</description>
 <part name="R3" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_RESISTOR" device="_0402MP" value="4.7K"/>
 <part name="SUPPLY7" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="GND13" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="C13" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP"/>
+<part name="C13" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" value="0.1uF"/>
 </parts>
 <sheets>
 <sheet>

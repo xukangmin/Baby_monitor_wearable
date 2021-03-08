@@ -4206,6 +4206,12 @@ IPC Nominal Density</description>
 <junction x="12.7" y="132.08"/>
 </segment>
 </net>
+<net name="N$15" class="0">
+<segment>
+<pinref part="U1" gate="G$3" pin="P0.13/QPSI_[0]"/>
+<wire x1="88.9" y1="114.3" x2="76.2" y2="114.3" width="0.1524" layer="91"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>

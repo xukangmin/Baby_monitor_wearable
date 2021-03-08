@@ -4079,6 +4079,12 @@ IPC Nominal Density</description>
 <wire x1="66.04" y1="132.08" x2="60.96" y2="132.08" width="0.1524" layer="91"/>
 <junction x="60.96" y="132.08"/>
 </segment>
+<segment>
+<pinref part="U3" gate="A" pin="GND"/>
+<wire x1="20.32" y1="129.54" x2="15.24" y2="129.54" width="0.1524" layer="91"/>
+<pinref part="GND3" gate="1" pin="GND"/>
+<wire x1="15.24" y1="129.54" x2="15.24" y2="119.38" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="1.8V" class="0">
 <segment>
@@ -4124,6 +4130,11 @@ IPC Nominal Density</description>
 <wire x1="10.16" y1="101.6" x2="10.16" y2="86.36" width="0.1524" layer="91"/>
 <junction x="10.16" y="86.36"/>
 </segment>
+<segment>
+<pinref part="U3" gate="A" pin="SCL"/>
+<wire x1="20.32" y1="134.62" x2="10.16" y2="134.62" width="0.1524" layer="91"/>
+<label x="12.7" y="134.62" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="SDA" class="0">
 <segment>
@@ -4140,6 +4151,11 @@ IPC Nominal Density</description>
 <wire x1="12.7" y1="106.68" x2="7.62" y2="106.68" width="0.1524" layer="91"/>
 <wire x1="7.62" y1="106.68" x2="7.62" y2="83.82" width="0.1524" layer="91"/>
 <junction x="7.62" y="83.82"/>
+</segment>
+<segment>
+<pinref part="U3" gate="A" pin="SDA"/>
+<wire x1="20.32" y1="137.16" x2="10.16" y2="137.16" width="0.1524" layer="91"/>
+<label x="12.7" y="137.16" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="INT" class="0">
