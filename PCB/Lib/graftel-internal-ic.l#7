@@ -33457,6 +33457,10 @@ link:https://www.digikey.com/product-detail/en/mpd-memory-protection-devices/BLP
 </technologies>
 </device>
 <device name="CR1216" package="BC-2017-TR">
+<connects>
+<connect gate="G$1" pin="+" pad="P$2 P$3"/>
+<connect gate="G$1" pin="-" pad="P$1"/>
+</connects>
 <technologies>
 <technology name=""/>
 </technologies>

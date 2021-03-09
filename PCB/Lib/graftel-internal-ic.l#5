@@ -40279,6 +40279,7 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <technologies>
 <technology name="">
 <attribute name="BUILT_BY" value="EMA_UL_Team" constant="no"/>
+<attribute name="DIGIKEY_PART" value="490-14308-1-ND" constant="no"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="XRCGB32M000F2P10R0" constant="no"/>
 <attribute name="SOURCELIBRARY" value="Murata_2017-08-09" constant="no"/>
 <attribute name="VENDOR" value="Murata" constant="no"/>

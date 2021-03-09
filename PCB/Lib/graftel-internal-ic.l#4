@@ -40502,7 +40502,9 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <connect gate="G$1" pin="P$1" pad="FP"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="DIGIKEY_PART" value="712-1006-1-ND" constant="no"/>
+</technology>
 </technologies>
 </device>
 </devices>
