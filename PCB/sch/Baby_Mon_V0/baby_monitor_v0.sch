@@ -3760,7 +3760,7 @@ IPC Nominal Density</description>
 <part name="L5" library="Adafruit Circuit Playground Bluefruit" deviceset="NORDIC_MISC_INDUCTOR" device="_0402_N" value="2.2nH"/>
 <part name="C8" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="0.7pF"/>
 <part name="GND7" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="J1" library="graftel-internal-ic" deviceset="BATT-COIN1" device="CR1216" override_package3d_urn="urn:adsk.eagle:package:27347996/2" override_package_urn="urn:adsk.eagle:footprint:27347997/1"/>
+<part name="J1" library="graftel-internal-ic" deviceset="BATT-COIN1" device="CR1216" override_package3d_urn="urn:adsk.eagle:package:27347996/3" override_package_urn="urn:adsk.eagle:footprint:27347997/1"/>
 <part name="X2" library="graftel-internal-ic" deviceset="ADAFRUIT_WIRELESS_ANTENNA_JOHANSON_2450AT18B100" device="" override_package3d_urn="urn:adsk.eagle:package:27369299/2" override_package_urn="urn:adsk.eagle:footprint:27369300/1"/>
 <part name="C9" library="graftel-internal-ic" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP"/>
 <part name="GND8" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
