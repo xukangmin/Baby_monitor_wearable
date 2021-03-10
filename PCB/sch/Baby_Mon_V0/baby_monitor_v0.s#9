@@ -4429,6 +4429,30 @@ IPC Nominal Density</description>
 <label x="78.74" y="114.3" size="1.778" layer="95"/>
 </segment>
 </net>
+<net name="DI" class="0">
+<segment>
+<pinref part="U1" gate="G$3" pin="P0.16/QPSI_[3]"/>
+<wire x1="88.9" y1="106.68" x2="76.2" y2="106.68" width="0.1524" layer="91"/>
+<label x="78.74" y="106.68" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="DI"/>
+<wire x1="175.26" y1="149.86" x2="157.48" y2="149.86" width="0.1524" layer="91"/>
+<label x="165.1" y="149.86" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="CI" class="0">
+<segment>
+<pinref part="U1" gate="G$3" pin="P0.19"/>
+<wire x1="88.9" y1="99.06" x2="76.2" y2="99.06" width="0.1524" layer="91"/>
+<label x="78.74" y="99.06" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$2" gate="G$1" pin="CKI"/>
+<wire x1="175.26" y1="147.32" x2="157.48" y2="147.32" width="0.1524" layer="91"/>
+<label x="165.1" y="147.32" size="1.778" layer="95"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>

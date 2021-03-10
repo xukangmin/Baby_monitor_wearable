@@ -3753,7 +3753,7 @@ IPC Nominal Density</description>
 <part name="C7" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="0.1uF"/>
 <part name="GND4" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND5" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="X1" library="graftel-internal-ic" deviceset="XRCGB32M000F2P10R0" device=""/>
+<part name="X1" library="graftel-internal-ic" deviceset="XRCGB32M000F2P10R0" device="" override_package3d_urn="urn:adsk.eagle:package:27369083/2" override_package_urn="urn:adsk.eagle:footprint:27369084/1"/>
 <part name="GND6" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="U2" library="graftel-internal-ic" deviceset="MAX30101EFD+" device="" override_package3d_urn="urn:adsk.eagle:package:27347799/4" override_package_urn="urn:adsk.eagle:footprint:27347800/1"/>
 <part name="U3" library="graftel-internal-ic" deviceset="MAX30205MTA+" device="" package3d_urn="urn:adsk.eagle:package:27347977/2"/>
@@ -3761,7 +3761,7 @@ IPC Nominal Density</description>
 <part name="C8" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="0.7pF"/>
 <part name="GND7" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="J1" library="graftel-internal-ic" deviceset="BATT-COIN1" device="CR1216" override_package3d_urn="urn:adsk.eagle:package:27347996/2" override_package_urn="urn:adsk.eagle:footprint:27347997/1"/>
-<part name="X2" library="graftel-internal-ic" deviceset="ADAFRUIT_WIRELESS_ANTENNA_JOHANSON_2450AT18B100" device=""/>
+<part name="X2" library="graftel-internal-ic" deviceset="ADAFRUIT_WIRELESS_ANTENNA_JOHANSON_2450AT18B100" device="" override_package3d_urn="urn:adsk.eagle:package:27369299/2" override_package_urn="urn:adsk.eagle:footprint:27369300/1"/>
 <part name="C9" library="graftel-internal-ic" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP"/>
 <part name="GND8" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="U4" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_VREG_SOT23-5" device="" override_package3d_urn="urn:adsk.eagle:package:27353287/2" override_package_urn="urn:adsk.eagle:footprint:27353289/1"/>
