@@ -1,0 +1,43 @@
+The target system is: Generic - 2.5.99 - arm
+The host system is: Windows - 10.0.19042 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2020-q4-major/bin/arm-none-eabi-gcc.exe 
+Build flags: 
+Id flags: -c 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+
+The C compiler identification is GNU, found in "C:/Users/kangmin/Documents/GitHub/Baby_monitor_wearable/Firmware/hello_world/nrf53dk/CMakeFiles/3.19.6/CompilerIdC/CMakeCCompilerId.o"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2020-q4-major/bin/arm-none-eabi-gcc.exe 
+Build flags: 
+Id flags: -c 
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.o"
+
+The CXX compiler identification is GNU, found in "C:/Users/kangmin/Documents/GitHub/Baby_monitor_wearable/Firmware/hello_world/nrf53dk/CMakeFiles/3.19.6/CompilerIdCXX/CMakeCXXCompilerId.o"
+
+Checking whether the ASM compiler is GNU using "--version" matched "(GNU assembler)|(GCC)|(Free Software Foundation)":
+arm-none-eabi-gcc.exe (GNU Arm Embedded Toolchain 10-2020-q4-major) 10.2.1 20201103 (release)
+Copyright (C) 2020 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Performing C SOURCE FILE Test check_fmacro_prefix_map_C__Users_kangmin_Documents_GitHub_Baby_monitor_wearable_Firmware_hello_world_CMAKE_SOURCE_DIR_C__nostartfiles__nostdlib__isystem__c__program_files__x86__gnu_arm_embedded_toolchain_10_2020_q4_major_bin____lib_gcc_arm_none_eabi_10_2_1_include___isystem__c__program_files__x86__gnu_arm_embedded_toolchain_10_2020_q4_major_bin____lib_gcc_arm_none_eabi_10_2_1_include_fixed___Wl___unresolved_symbols_ignore_in_object_files__Wl___entry_0 succeeded with the following output:
+Change Dir: C:/Users/kangmin/Documents/GitHub/Baby_monitor_wearable/Firmware/hello_world/nrf53dk/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/ProgramData/chocolatey/bin/ninja.exe cmTC_29981 && [1/2] Building C object CMakeFiles/cmTC_29981.dir/src.c.obj
+[2/2] Linking C executable cmTC_29981
+
+
+Source file was:
+int main(void) { return 0; }

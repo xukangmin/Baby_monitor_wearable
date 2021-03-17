@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/kangmin/ncs/v1.5.0/zephyr/boards
+# Install script for directory: C:/Users/kangmin/zephyrproject/zephyr/boards
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -30,5 +30,16 @@ endif()
 # Is this installation the result of a crosscompile?
 if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "TRUE")
+endif()
+
+# Set default install directory permissions.
+if(NOT DEFINED CMAKE_OBJDUMP)
+  set(CMAKE_OBJDUMP "C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2020-q4-major/bin/arm-none-eabi-objdump.exe")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for each subdirectory.
+  include("C:/Users/kangmin/Documents/GitHub/Baby_monitor_wearable/Firmware/hello_world/build/zephyr/boards/arm/nrf5340dk_nrf5340/cmake_install.cmake")
+
 endif()
 
