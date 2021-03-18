@@ -115,10 +115,10 @@ void main(void)
 
 	struct sensor_value red;
 	struct sensor_value IR;
-	const struct device *dev = device_get_binding(DT_LABEL(DT_INST(0, max_max30101)));
+	const struct device *dev = device_get_binding(DT_LABEL(DT_INST(0, max_max30102)));
 
 	if (dev == NULL) {
-		printf("Could not get max30101 device\n");
+		printf("Could not get max30102 device\n");
 		return;
 	}
 
