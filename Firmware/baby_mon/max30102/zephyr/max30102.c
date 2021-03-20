@@ -53,19 +53,19 @@ static struct max30102_config max30102_config = {
 	.slot[3] = MAX30102_SLOT_DISABLED,
 #else
 	.mode = MAX30102_MODE_MULTI_LED,
-	.slot[0] = CONFIG_MAX30102_SLOT1,
-	.slot[1] = CONFIG_MAX30102_SLOT2,
-	.slot[2] = CONFIG_MAX30102_SLOT3,
-	.slot[3] = CONFIG_MAX30102_SLOT4,
+	.slot[0] = 0,
+	.slot[1] = 0,
+	.slot[2] = 0,
+	.slot[3] = 0,
 #endif
 
-	.spo2 = (CONFIG_MAX30102_ADC_RGE << MAX30102_SPO2_ADC_RGE_SHIFT) |
-		(CONFIG_MAX30102_SR << MAX30102_SPO2_SR_SHIFT) |
+	.spo2 = (1 << MAX30102_SPO2_ADC_RGE_SHIFT) |
+		(1 << MAX30102_SPO2_SR_SHIFT) |
 		(MAX30102_PW_18BITS << MAX30102_SPO2_PW_SHIFT),
 
-	.led_pa[0] = CONFIG_MAX30102_LED1_PA,
-	.led_pa[1] = CONFIG_MAX30102_LED2_PA,
-	.led_pa[2] = CONFIG_MAX30102_LED3_PA,
+	.led_pa[0] = 0,
+	.led_pa[1] = 0,
+	.led_pa[2] = 0,
 };
 
 static struct max30102_data max30102_data;
