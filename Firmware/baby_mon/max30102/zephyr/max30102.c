@@ -32,6 +32,39 @@ static const struct sensor_driver_api max30102_driver_api = {
 
 static int max30102_init(const struct device *dev)
 {
+
+	const struct max30102_config *config = dev->config;
+	struct max30102_data *data = dev->data;
+	uint8_t part_id;
+	uint8_t mode_cfg;
+	uint32_t led_chan;
+	int fifo_chan;
+
+	/* Get the I2C device */
+	data->i2c = device_get_binding(config->i2c_label);
+	if (!data->i2c) {
+		LOG_ERR("Could not find I2C device");
+		return -EINVAL;
+	}
+
+	/* Check the part id to make sure this is MAX30101 */
+	if (i2c_reg_read_byte(data->i2c, config->i2c_addr,
+			      MAX30102_REG_PART_ID, &part_id)) {
+		LOG_ERR("Could not get Part ID");
+		return -EIO;
+	}
+
+	if (part_id == MAX30102_PART_ID) 
+	{
+		LOG_INF("Part Number OK");
+	}
+	else
+	{
+		LOG_ERR("Got Part ID 0x%02x, expected 0x%02x",
+			    part_id, MAX30102_PART_ID);
+		return -EIO;
+	}
+
 	return 0;
 }
 
