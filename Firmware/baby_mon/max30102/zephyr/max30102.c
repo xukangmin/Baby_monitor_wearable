@@ -10,7 +10,110 @@
 
 #include "max30102.h"
 
+
+static uint16_t _i2c_addr;
+
+const struct device *_i2c_device;
+
 LOG_MODULE_REGISTER(MAX30102, CONFIG_SENSOR_LOG_LEVEL);
+
+void writeReg(uint8_t reg, const void* pBuf, uint8_t size)
+{
+  if(pBuf == NULL) {
+    LOG_ERR("pBuf ERROR!! : null pointer");
+  }
+  uint8_t * _pBuf = (uint8_t *)pBuf;
+
+   i2c_burst_write(_i2c_device, _i2c_addr, reg, _pBuf, size);
+}
+
+uint8_t readReg(uint8_t reg, const void* pBuf, uint8_t size)
+{
+  if(pBuf == NULL) {
+    LOG_ERR("pBuf ERROR!! : null pointer");
+  }
+  uint8_t * _pBuf = (uint8_t *)pBuf;
+
+
+  i2c_burst_read(_i2c_device, _i2c_addr, reg, _pBuf, size);
+
+  return size;
+}
+
+
+void setFIFOAverage(uint8_t numberOfSamples)
+{
+  sFIFO_t FIFOReg;
+  readReg(MAX30102_FIFOCONFIG, &FIFOReg, 1);
+  FIFOReg.sampleAverag = numberOfSamples;
+  writeReg(MAX30102_FIFOCONFIG, &FIFOReg, 1);
+}
+
+void enableFIFORollover(void)
+{
+  sFIFO_t FIFOReg;
+  readReg(MAX30102_FIFOCONFIG, &FIFOReg, 1);
+  FIFOReg.RollOver = 1;
+  writeReg(MAX30102_FIFOCONFIG, &FIFOReg, 1);
+}
+
+void disableFIFORollover(void)
+{
+  sFIFO_t FIFOReg;
+  readReg(MAX30102_FIFOCONFIG, &FIFOReg, 1);
+  FIFOReg.RollOver = 0;
+  writeReg(MAX30102_FIFOCONFIG, &FIFOReg, 1);
+}
+
+void setFIFOAlmostFull(uint8_t numberOfSamples)
+{
+  sFIFO_t FIFOReg;
+  readReg(MAX30102_FIFOCONFIG, &FIFOReg, 1);
+  FIFOReg.almostFull = numberOfSamples;
+  writeReg(MAX30102_FIFOCONFIG, &FIFOReg, 1);
+}
+
+
+
+float readTemperatureC()
+{
+
+  uint8_t byteTemp = 0x01;
+  writeReg(MAX30102_DIETEMPCONFIG, &byteTemp, 1);
+
+  uint32_t startTime = millis();
+  while (millis() - startTime < 100) { 
+    readReg(MAX30102_DIETEMPCONFIG, &byteTemp, 1);
+    if ((byteTemp & 0x01) == 0) break; 
+    delay(1);
+  }
+
+
+  uint8_t tempInt;
+  readReg(MAX30102_DIETEMPINT, &tempInt, 1);
+
+  uint8_t tempFrac;
+  readReg(MAX30102_DIETEMPFRAC, &tempFrac, 1);
+
+  return (float)tempInt + ((float)tempFrac * 0.0625);
+}
+
+float readTemperatureF()
+{
+  float temp = readTemperatureC();
+  if (temp != -999.0) temp = temp * 1.8 + 32.0;
+  return (temp);
+}
+
+uint8_t getPartID()
+{
+  uint8_t byteTemp;
+  readReg(MAX30102_PARTID, &byteTemp, 1);
+  return byteTemp;
+}
+
+
+
 
 static int max30102_sample_fetch(const struct device *dev,
 				 enum sensor_channel chan)
@@ -30,6 +133,10 @@ static const struct sensor_driver_api max30102_driver_api = {
 	.channel_get = max30102_channel_get,
 };
 
+
+
+
+
 static int max30102_init(const struct device *dev)
 {
 
@@ -47,23 +154,24 @@ static int max30102_init(const struct device *dev)
 		return -EINVAL;
 	}
 
-	/* Check the part id to make sure this is MAX30101 */
-	if (i2c_reg_read_byte(data->i2c, config->i2c_addr,
-			      MAX30102_REG_PART_ID, &part_id)) {
-		LOG_ERR("Could not get Part ID");
-		return -EIO;
-	}
+	_i2c_device = data->i2c;
+	_i2c_addr = config->i2c_addr;
 
-	if (part_id == MAX30102_PART_ID) 
+	if (getPartID() == MAX30102_EXPECTED_PARTID)
 	{
-		LOG_INF("Part Number OK");
+		LOG_INF("part id ok");
 	}
 	else
 	{
-		LOG_ERR("Got Part ID 0x%02x, expected 0x%02x",
-			    part_id, MAX30102_PART_ID);
-		return -EIO;
+		LOG_ERR("Could not get Part ID");
 	}
+
+	// /* Check the part id to make sure this is MAX30101 */
+	// if (i2c_reg_read_byte(data->i2c, config->i2c_addr,
+	// 		      MAX30102_REG_PART_ID, &part_id)) {
+	// 	LOG_ERR("Could not get Part ID");
+	// 	return -EIO;
+	// }
 
 	return 0;
 }
@@ -71,34 +179,12 @@ static int max30102_init(const struct device *dev)
 static struct max30102_config max30102_config = {
 	.i2c_label = DT_INST_BUS_LABEL(0),
 	.i2c_addr = DT_INST_REG_ADDR(0),
-	.fifo = 10,
-#if defined(CONFIG_MAX30102_HEART_RATE_MODE)
-	.mode = MAX30102_MODE_HEART_RATE,
-	.slot[0] = MAX30102_SLOT_RED_LED1_PA,
-	.slot[1] = MAX30102_SLOT_DISABLED,
-	.slot[2] = MAX30102_SLOT_DISABLED,
-	.slot[3] = MAX30102_SLOT_DISABLED,
-#elif defined(CONFIG_MAX30102_SPO2_MODE)
-	.mode = MAX30102_MODE_SPO2,
-	.slot[0] = MAX30102_SLOT_RED_LED1_PA,
-	.slot[1] = MAX30102_SLOT_IR_LED2_PA,
-	.slot[2] = MAX30102_SLOT_DISABLED,
-	.slot[3] = MAX30102_SLOT_DISABLED,
-#else
-	.mode = MAX30102_MODE_MULTI_LED,
-	.slot[0] = 0,
-	.slot[1] = 0,
-	.slot[2] = 0,
-	.slot[3] = 0,
-#endif
-
-	.spo2 = (1 << MAX30102_SPO2_ADC_RGE_SHIFT) |
-		(1 << MAX30102_SPO2_SR_SHIFT) |
-		(MAX30102_PW_18BITS << MAX30102_SPO2_PW_SHIFT),
-
-	.led_pa[0] = 0,
-	.led_pa[1] = 0,
-	.led_pa[2] = 0,
+	.ledBrightness = 0x1F,
+	.sampleAverage = SAMPLEAVG_4,
+	.ledMode = MODE_MULTILED,
+	.sampleRate = SAMPLERATE_400,
+	.pulseWidth = PULSEWIDTH_411,
+	.adcRange = ADCRANGE_4096
 };
 
 static struct max30102_data max30102_data;

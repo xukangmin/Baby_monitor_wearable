@@ -8,96 +8,212 @@
 #include <drivers/i2c.h>
 #include <drivers/gpio.h>
 
-#define MAX30102_REG_INT_STS1		0x00
-#define MAX30102_REG_INT_STS2		0x01
-#define MAX30102_REG_INT_EN1		0x02
-#define MAX30102_REG_INT_EN2		0x03
-#define MAX30102_REG_FIFO_WR		0x04
-#define MAX30102_REG_FIFO_OVF		0x05
-#define MAX30102_REG_FIFO_RD		0x06
-#define MAX30102_REG_FIFO_DATA		0x07
-#define MAX30102_REG_FIFO_CFG		0x08
-#define MAX30102_REG_MODE_CFG		0x09
-#define MAX30102_REG_SPO2_CFG		0x0a
-#define MAX30102_REG_LED1_PA		0x0c
-#define MAX30102_REG_LED2_PA		0x0d
-#define MAX30102_REG_LED3_PA		0x0e
-#define MAX30102_REG_PILOT_PA		0x10
-#define MAX30102_REG_MULTI_LED		0x11
-#define MAX30102_REG_TINT		0x1f
-#define MAX30102_REG_TFRAC		0x20
-#define MAX30102_REG_TEMP_CFG		0x21
-#define MAX30102_REG_PROX_INT		0x30
-#define MAX30102_REG_REV_ID		0xfe
-#define MAX30102_REG_PART_ID		0xff
+#define MAX30102_IIC_ADDRESS  0x57 //I2C Address
 
-#define MAX30102_INT_PPG_MASK		(1 << 6)
+//Status Registers
+#define MAX30102_INTSTAT1        0x00//Interrupt Status1
+#define MAX30102_INTSTAT2        0x01//Interrupt Status2
+#define MAX30102_INTENABLE1      0x02//Interrupt Enable1
+#define MAX30102_INTENABLE2      0x03//Interrupt Enable2
+//FIFO Registers
+#define MAX30102_FIFOWRITEPTR    0x04//FIFO Write Pointer, The FIFO Write Pointer points to the location where the MAX30102 writes the next sample. This pointer advances for each sample pushed on to the FIFO. It can also be changed through the I2C interface when MODE[2:0] is 010, 011, or 111.
+#define MAX30102_FIFOOVERFLOW    0x05//FIFO Overflow Counter, When the FIFO is full, samples are not pushed on to the FIFO, samples are lost. OVF_COUNTER counts the number of samples lost. It saturates at 0x1F. When a complete sample is “popped” (i.e., removal of old FIFO data and shifting the samples down) from the FIFO (when the read pointer advances), OVF_COUNTER is reset to zero.
+#define MAX30102_FIFOREADPTR     0x06//FIFO Read Pointer, The FIFO Read Pointer points to the location from where the processor gets the next sample from the FIFO through the I2C interface. This advances each time a sample is popped from the FIFO. The processor can also write to this pointer after reading the samples to allow rereading samples from the FIFO if there is a data communication error.
+#define MAX30102_FIFODATA        0x07//FIFO Data Register, The circular FIFO depth is 32 and can hold up to 32 samples of data. The sample size depends on the number of LED channels (a.k.a. channels) configured as active. As each channel signal is stored as a 3-byte data signal, the FIFO width can be 3 bytes or 6 bytes in size.
+//Configuration Registers
+#define MAX30102_FIFOCONFIG      0x08//FIFO Configuration
+#define MAX30102_MODECONFIG      0x09//Mode Configuration
+#define MAX30102_PARTICLECONFIG  0x0A//SpO2 Configuration
+#define MAX30102_LED1_PULSEAMP   0x0C//LED1 Pulse Amplitude
+#define MAX30102_LED2_PULSEAMP   0x0D//LED2 Pulse Amplitude
+#define MAX30102_LED3_PULSEAMP   0x0E//RESERVED
+#define MAX30102_LED_PROX_AMP    0x10//RESERVED
+#define MAX30102_MULTILEDCONFIG1 0x11//Multi-LED Mode Control Registers
+#define MAX30102_MULTILEDCONFIG2 0x12//Multi-LED Mode Control Registers
+//Die Temperature Registers
+#define MAX30102_DIETEMPINT      0x1F//Die Temp Integer
+#define MAX30102_DIETEMPFRAC     0x20//Die Temp Fraction
+#define MAX30102_DIETEMPCONFIG   0x21//Die Temperature Config
+#define MAX30102_PROXINTTHRESH   0x30//RESERVED
+//Part ID Registers
+#define MAX30102_REVISIONID      0xFE//Revision ID
+#define MAX30102_PARTID          0xFF//Part ID:0x15
+#define MAX30102_EXPECTED_PARTID  0x15
 
-#define MAX30102_FIFO_CFG_SMP_AVE_SHIFT		5
-#define MAX30102_FIFO_CFG_FIFO_FULL_SHIFT	0
-#define MAX30102_FIFO_CFG_ROLLOVER_EN_MASK	(1 << 4)
+#define MAX30102_SENSE_BUF_SIZE  30
 
-#define MAX30102_MODE_CFG_SHDN_MASK	(1 << 7)
-#define MAX30102_MODE_CFG_RESET_MASK	(1 << 6)
 
-#define MAX30102_SPO2_ADC_RGE_SHIFT	5
-#define MAX30102_SPO2_SR_SHIFT		2
-#define MAX30102_SPO2_PW_SHIFT		0
 
-#define MAX30102_PART_ID		0x15
+//Configuration Options 
+//FIFO Configuration(Register address 0x08)
+//sampleAverage(Table 3. Sample Averaging)
+#define SAMPLEAVG_1     0
+#define SAMPLEAVG_2     1
+#define SAMPLEAVG_4     2
+#define SAMPLEAVG_8     3
+#define SAMPLEAVG_16    4
+#define SAMPLEAVG_32    5
 
-#define MAX30102_BYTES_PER_CHANNEL	3
-#define MAX30102_MAX_NUM_CHANNELS	3
-#define MAX30102_MAX_BYTES_PER_SAMPLE	(MAX30102_MAX_NUM_CHANNELS * \
-					 MAX30102_BYTES_PER_CHANNEL)
+//Mode configuration(Register address 0x09)
+//ledMode(Table 4. Mode Control)
+#define MODE_REDONLY    2
+#define MODE_RED_IR     3
+#define MODE_MULTILED   7
 
-#define MAX30102_SLOT_LED_MASK		0x03
+//Particle sensing configuration(Register address 0x0A)
+//adcRange(Table 5. SpO2 ADC Range Control)
+#define ADCRANGE_2048   0
+#define ADCRANGE_4096   1
+#define ADCRANGE_8192   2
+#define ADCRANGE_16384  3
+//sampleRate(Table 6. SpO2 Sample Rate Control)
+#define SAMPLERATE_50   0 
+#define SAMPLERATE_100  1
+#define SAMPLERATE_200  2
+#define SAMPLERATE_400  3
+#define SAMPLERATE_800  4
+#define SAMPLERATE_1000 5
+#define SAMPLERATE_1600 6
+#define SAMPLERATE_3200 7
+//pulseWidth(Table 7. LED Pulse Width Control)
+#define PULSEWIDTH_69   0 
+#define PULSEWIDTH_118  1
+#define PULSEWIDTH_215  2
+#define PULSEWIDTH_411  3
 
-#define MAX30102_FIFO_DATA_BITS		18
-#define MAX30102_FIFO_DATA_MASK		((1 << MAX30102_FIFO_DATA_BITS) - 1)
+//Multi-LED Mode Control Registers(Register address 0x011)
+#define SLOT_NONE       0
+#define SLOT_RED_LED    1
+#define SLOT_IR_LED     2
 
-enum max30102_mode {
-	MAX30102_MODE_HEART_RATE	= 2,
-	MAX30102_MODE_SPO2		= 3,
-	MAX30102_MODE_MULTI_LED		= 7,
-};
 
-enum max30102_slot {
-	MAX30102_SLOT_DISABLED		= 0,
-	MAX30102_SLOT_RED_LED1_PA,
-	MAX30102_SLOT_IR_LED2_PA,
-	MAX30102_SLOT_GREEN_LED3_PA,
-	MAX30102_SLOT_RED_PILOT_PA,
-	MAX30102_SLOT_IR_PILOT_PA,
-	MAX30102_SLOT_GREEN_PILOT_PA,
-};
 
-enum max30102_led_channel {
-	MAX30102_LED_CHANNEL_RED	= 0,
-	MAX30102_LED_CHANNEL_IR,
-	MAX30102_LED_CHANNEL_GREEN,
-};
 
-enum max30102_pw {
-	MAX30102_PW_15BITS		= 0,
-	MAX30102_PW_16BITS,
-	MAX30102_PW_17BITS,
-	MAX30102_PW_18BITS,
-};
+ /*
+    Interrupt Status(0x00–0x01) (pg 12)
+    * ------------------------------------------------------------------------------------------
+    * |    b7    |    b6    |    b5    |    b4    |    b3    |    b2    |    b1     |    b0    |
+    * ------------------------------------------------------------------------------------------
+    * |  A_FULL  | PPG_RDY  |  ALC_OVF |                    NONE                    | PWR_RDY  |
+    * ------------------------------------------------------------------------------------------
+    * ------------------------------------------------------------------------------------------
+    * |    b7    |    b6    |    b5    |    b4    |    b3    |    b2   |     b1     |    b0    |
+    * ------------------------------------------------------------------------------------------
+    * |                           NONE                                 |DIE_TEMP_RDY|   NONE   |
+    * ------------------------------------------------------------------------------------------
+  */
+  /*
+    Interrupt Enable(0x02–0x03) (pg 13)
+    * ------------------------------------------------------------------------------------------
+    * |    b7    |    b6    |    b5    |    b4    |    b3    |    b2    |    b1     |    b0    |
+    * ------------------------------------------------------------------------------------------
+    * |A_FULL_EN |PPG_RDY_EN|ALC_OVF_EN|                         NONE                          |
+    * ------------------------------------------------------------------------------------------
+    * ------------------------------------------------------------------------------------------
+    * |    b7    |    b6    |    b5    |    b4    |    b3    |    b2   |       b1      |   b0  |
+    * ------------------------------------------------------------------------------------------
+    * |                           NONE                                 |DIE_TEMP_RDY_EN|  NONE |
+    * ------------------------------------------------------------------------------------------
+  */
+  typedef struct {
+    uint8_t   NONE:1;
+    uint8_t   dieTemp:1;     // Internal Temperature Ready Flag
+    uint8_t   NONE1:6;
+    uint8_t   NONE2:5;
+    uint8_t   ALCOverflow:1; // Ambient Light Cancellation Overflow
+    uint8_t   dataReady:1;   // New FIFO Data Ready
+    uint8_t   almostFull:1;  // FIFO Almost Full Flag
+  } __attribute__ ((packed)) sEnable_t;
+  /*
+    FIFO Configuration(0x08) (pg 17)
+    * ------------------------------------------------------------------------------------------
+    * |    b7    |    b6    |    b5    |    b4          | b3 |    b2    |    b1     |    b0    |
+    * ------------------------------------------------------------------------------------------
+    * |            SMP_AVE             |FIFO_ROLLOVER_EN|               FIFO_A_FULL            |
+    * ------------------------------------------------------------------------------------------
+  */
+  typedef struct {
+    uint8_t   almostFull:4; // FIFO Almost Full Value
+    uint8_t   RollOver:1;   // FIFO Rolls on Full
+    uint8_t   sampleAverag:3;  // Sample Averaging
+  } __attribute__ ((packed)) sFIFO_t;
+
+  /*
+    Mode configuration(0x09) (pg 18)
+    * ------------------------------------------------------------------------------------------
+    * |    b7    |    b6    |    b5    |    b4    |    b3    |    b2    |    b1     |    b0    |
+    * ------------------------------------------------------------------------------------------
+    * |   SHDN   |   RESET  |             NONE               |              MODE               |
+    * ------------------------------------------------------------------------------------------
+  */
+  typedef struct {
+    uint8_t   ledMode:6; /*!< 010:Heart Rate mode, Red only. 011:SpO2 mode, Red and IR. 111:Multi-LED mode, Red and IR*/
+    uint8_t   reset:1; /*!< 1:reset */
+    uint8_t   shutDown:1; /*!< 0: wake up 1: put IC into low power mode*/
+  } __attribute__ ((packed)) sMode_t;
+
+  /*
+    Particle sensing configuration(0x0A) (pg 18)
+    * ------------------------------------------------------------------------------------------
+    * |    b7    |    b6    |    b5    |    b4    |    b3    |    b2    |    b1     |    b0    |
+    * ------------------------------------------------------------------------------------------
+    * |   NONE   |     SPO2_ADC_RGE    |             SPO2_SR            |        LED_PW        |
+    * ------------------------------------------------------------------------------------------
+  */
+  typedef struct {
+    uint8_t   pulseWidth:2;
+    uint8_t   sampleRate:3;
+    uint8_t   adcRange:3;
+  } __attribute__ ((packed)) sParticle_t;
+
+  /*
+    LED Pulse Amplitude(0x0C–0x0D) (pg 20)
+    * ------------------------------------------------------------------------------------------
+    * |    b7    |    b6    |    b5    |    b4    |    b3    |    b2    |    b1     |    b0    |
+    * ------------------------------------------------------------------------------------------
+    * |                                         LED1_PA                                        |
+    * ------------------------------------------------------------------------------------------
+    * ------------------------------------------------------------------------------------------
+    * |    b7    |    b6    |    b5    |    b4    |    b3    |    b2    |    b1     |    b0    |
+    * ------------------------------------------------------------------------------------------
+    * |                                         LED2_PA                                        |
+    * ------------------------------------------------------------------------------------------
+  */
+  /*
+    Multi-LED Mode Control Registers(0x011) (pg 21)
+    * ------------------------------------------------------------------------------------------
+    * |    b7    |    b6    |    b5    |    b4    |    b3    |    b2    |    b1     |    b0    |
+    * ------------------------------------------------------------------------------------------
+    * |   NONE   |              SLOT2             |   NONE   |             SLOT1               |
+    * ------------------------------------------------------------------------------------------
+  */
+  typedef struct {
+    uint8_t   SLOT1:4;
+    uint8_t   SLOT2:4;
+  } __attribute__ ((packed)) sMultiLED_t;
+
+  /*!
+   *@brief Circular buffer for storing samples 
+   */
+  typedef struct {
+    uint32_t red[MAX30102_SENSE_BUF_SIZE];
+    uint32_t IR[MAX30102_SENSE_BUF_SIZE];
+    uint8_t head;
+    uint8_t tail;
+  } sSenseBuf_t;
 
 struct max30102_config {
 	const char *i2c_label;
 	uint16_t i2c_addr;
-	uint8_t fifo;
-	uint8_t spo2;
-	uint8_t led_pa[MAX30102_MAX_NUM_CHANNELS];
-	enum max30102_mode mode;
-	enum max30102_slot slot[4];
+	uint8_t ledBrightness;
+	uint8_t sampleAverage;
+	uint8_t ledMode;
+	uint8_t sampleRate;
+	uint8_t pulseWidth;
+	uint8_t adcRange;
 };
 
 struct max30102_data {
 	const struct device *i2c;
-	uint32_t raw[MAX30102_MAX_NUM_CHANNELS];
-	uint8_t map[MAX30102_MAX_NUM_CHANNELS];
-	uint8_t num_channels;
+	sSenseBuf_t senseBuf;//Buffer for storing multiple groups of array
 };
