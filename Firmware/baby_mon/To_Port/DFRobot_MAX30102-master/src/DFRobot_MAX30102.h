@@ -287,7 +287,7 @@ public:
    */
   void heartrateAndOxygenSaturation(int32_t* SPO2,int8_t* SPO2Valid,int32_t* heartRate,int8_t* heartRateValid);
 
-private:
+///private:
   
   /*!
    *@brief Reset all configuration, threshold, and data regsiter. When reset completed, auto reset the reset bit
