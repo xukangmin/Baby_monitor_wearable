@@ -1,3 +1,30 @@
 {
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "files.associations": {
+        "log.h": "c",
+        "log_core.h": "c",
+        "log_instance.h": "c",
+        "log_msg.h": "c",
+        "atomic.h": "c",
+        "toolchain.h": "c",
+        "max30102.h": "c",
+        "sensor.h": "c",
+        "device.h": "c",
+        "init.h": "c",
+        "kernel.h": "c",
+        "kernel_includes.h": "c",
+        "sched_priq.h": "c",
+        "rb.h": "c",
+        "other.h": "c",
+        "*.tcc": "c",
+        "cstdio": "c",
+        "list": "c",
+        "string": "c",
+        "exception": "c",
+        "optional": "c",
+        "random": "c",
+        "new": "c",
+        "string_view": "c",
+        "type_traits": "c"
+    }
 }

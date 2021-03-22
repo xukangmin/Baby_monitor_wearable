@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/Users/kangmin/zephyrproject/zephyr/**"
+                "C:/Users/xukan/zephyrproject/zephyr/**",
+                "C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2020-q4-major/**"
             ],
             "defines": [
                 "_DEBUG",
