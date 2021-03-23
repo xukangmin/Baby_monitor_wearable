@@ -10,6 +10,7 @@
 
 #include "max30102.h"
 
+#include "algorithm.h"
 
 static uint16_t _i2c_addr;
 
@@ -20,8 +21,6 @@ static int _activeLEDs = 0;
 static sSenseBuf_t* _senseBuf;
 
 LOG_MODULE_REGISTER(MAX30102, CONFIG_SENSOR_LOG_LEVEL);
-
-static uint8_t ledB = 0;
 
 void writeReg(uint8_t reg, const void* pBuf, uint8_t size)
 {
@@ -230,12 +229,14 @@ float readTemperatureC()
 
   uint8_t byteTemp = 0x01;
   writeReg(MAX30102_DIETEMPCONFIG, &byteTemp, 1);
+  
+  uint8_t timeout = 100;
 
-  uint32_t startTime = millis();
-  while (millis() - startTime < 100) { 
+  //uint32_t startTime = millis();
+  while (timeout--) { 
     readReg(MAX30102_DIETEMPCONFIG, &byteTemp, 1);
     if ((byteTemp & 0x01) == 0) break; 
-    delay(1);
+    k_msleep(1);
   }
 
 
@@ -323,6 +324,37 @@ void getNewData(void)
 }
 
 
+void heartrateAndOxygenSaturation(int32_t* SPO2,int8_t* SPO2Valid,int32_t* heartRate,int8_t* heartRateValid)
+{
+
+  uint32_t irBuffer[100];
+  uint32_t redBuffer[100];
+
+  int32_t bufferLength = 100;
+
+  for (uint8_t i = 0 ; i < bufferLength ; ) {
+    getNewData(); 
+ 
+    int8_t numberOfSamples = _senseBuf->head - _senseBuf->tail;
+    if (numberOfSamples < 0) {
+      numberOfSamples += MAX30102_SENSE_BUF_SIZE;
+    }
+
+    while(numberOfSamples--) {
+      redBuffer[i] = _senseBuf->red[_senseBuf->tail];
+      irBuffer[i] = _senseBuf->IR[_senseBuf->tail];
+
+      _senseBuf->tail++;
+      _senseBuf->tail %= MAX30102_SENSE_BUF_SIZE;
+      i++;
+      if(i == bufferLength) break;
+    }
+  }
+
+  maxim_heart_rate_and_oxygen_saturation(/**pun_ir_buffer=*/irBuffer, /*n_ir_buffer_length=*/bufferLength, /**pun_red_buffer=*/redBuffer, \
+      /**pn_spo2=*/SPO2, /**pch_spo2_valid=*/SPO2Valid, /**pn_heart_rate=*/heartRate, /**pch_hr_valid=*/heartRateValid);
+}
+
 static int max30102_sample_fetch(const struct device *dev,
 				 enum sensor_channel chan)
 {
@@ -368,10 +400,7 @@ static int max30102_init(const struct device *dev)
 
 	const struct max30102_config *config = dev->config;
 	struct max30102_data *data = dev->data;
-	uint8_t part_id;
-	uint8_t mode_cfg;
-	uint32_t led_chan;
-	int fifo_chan;
+
 
 	_senseBuf = &(data->senseBuf);
 	/* Get the I2C device */

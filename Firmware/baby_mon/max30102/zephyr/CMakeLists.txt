@@ -13,5 +13,6 @@ if(CONFIG_MAX30102)
   zephyr_library()
   zephyr_library_sources(
     max30102.c
+    algorithm.c
     )
 endif()
