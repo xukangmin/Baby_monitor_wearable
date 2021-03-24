@@ -12,6 +12,9 @@
 
 #include "algorithm.h"
 
+
+#define BUFFER_LENGTH 100
+
 static uint16_t _i2c_addr;
 
 const struct device *_i2c_device;
@@ -19,6 +22,17 @@ const struct device *_i2c_device;
 static int _activeLEDs = 0;
 
 static sSenseBuf_t* _senseBuf;
+
+
+int32_t SPO2; //SPO2
+int8_t SPO2Valid; //Flag to display if SPO2 calculation is valid
+int32_t heartRate; //Heart-rate
+int8_t heartRateValid; //Flag to display if heart-rate calculation is valid 
+
+
+
+static uint32_t irBuffer[BUFFER_LENGTH];
+static uint32_t redBuffer[BUFFER_LENGTH];
 
 LOG_MODULE_REGISTER(MAX30102, CONFIG_SENSOR_LOG_LEVEL);
 
@@ -273,7 +287,7 @@ void getNewData(void)
     writePointer = getWritePointer();
 
     if (readPointer == writePointer) {
-      LOG_INF("no data");
+      //LOG_INF("no data");
     } else {
       numberOfSamples = writePointer - readPointer;
       if (numberOfSamples < 0) numberOfSamples += 32;
@@ -324,17 +338,17 @@ void getNewData(void)
 }
 
 
-void heartrateAndOxygenSaturation(int32_t* SPO2,int8_t* SPO2Valid,int32_t* heartRate,int8_t* heartRateValid)
+static void heartrateAndOxygenSaturation(int32_t* SPO2,int8_t* SPO2Valid,int32_t* heartRate,int8_t* heartRateValid)
 {
 
-  uint32_t irBuffer[100];
-  uint32_t redBuffer[100];
 
-  int32_t bufferLength = 100;
 
-  for (uint8_t i = 0 ; i < bufferLength ; ) {
+  
+
+  for (uint8_t i = 0 ; i < BUFFER_LENGTH ; ) {
+    //LOG_INF("buffer size=%d", i);
     getNewData(); 
- 
+
     int8_t numberOfSamples = _senseBuf->head - _senseBuf->tail;
     if (numberOfSamples < 0) {
       numberOfSamples += MAX30102_SENSE_BUF_SIZE;
@@ -347,18 +361,24 @@ void heartrateAndOxygenSaturation(int32_t* SPO2,int8_t* SPO2Valid,int32_t* heart
       _senseBuf->tail++;
       _senseBuf->tail %= MAX30102_SENSE_BUF_SIZE;
       i++;
-      if(i == bufferLength) break;
+      if(i == BUFFER_LENGTH) break;
     }
   }
 
-  maxim_heart_rate_and_oxygen_saturation(/**pun_ir_buffer=*/irBuffer, /*n_ir_buffer_length=*/bufferLength, /**pun_red_buffer=*/redBuffer, \
+  maxim_heart_rate_and_oxygen_saturation(/**pun_ir_buffer=*/irBuffer, /*n_ir_buffer_length=*/BUFFER_LENGTH, /**pun_red_buffer=*/redBuffer, \
       /**pn_spo2=*/SPO2, /**pch_spo2_valid=*/SPO2Valid, /**pn_heart_rate=*/heartRate, /**pch_hr_valid=*/heartRateValid);
 }
 
 static int max30102_sample_fetch(const struct device *dev,
 				 enum sensor_channel chan)
 {
-	getNewData();
+  //LOG_INF("enter heart rate calculation");
+  //getNewData();
+	heartrateAndOxygenSaturation(/**SPO2=*/&SPO2, /**SPO2Valid=*/&SPO2Valid, /**heartRate=*/&heartRate, /**heartRateValid=*/&heartRateValid);
+
+  LOG_INF("SPO2 = %d, SPO2Valid= %d", SPO2, SPO2Valid);
+  LOG_INF("heartRate = %d, heartRateValid= %d", heartRate, heartRateValid);
+
 	return 0;
 }
 
@@ -469,7 +489,7 @@ static int max30102_init(const struct device *dev)
 static struct max30102_config max30102_config = {
 	.i2c_label = DT_INST_BUS_LABEL(0),
 	.i2c_addr = DT_INST_REG_ADDR(0),
-	.ledBrightness = 20,
+	.ledBrightness = 50,
 	.sampleAverage = SAMPLEAVG_4,
 	.ledMode = MODE_MULTILED,
 	.sampleRate = SAMPLERATE_400,

@@ -1,5 +1,6 @@
 {
-    "cmake.configureOnOpen": true,
+    "cmake.configureOnOpen": false,
+    "C_Cpp.intelliSenseCacheSize": 0,
     "files.associations": {
         "log.h": "c",
         "log_core.h": "c",
@@ -26,5 +27,6 @@
         "new": "c",
         "string_view": "c",
         "type_traits": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }
