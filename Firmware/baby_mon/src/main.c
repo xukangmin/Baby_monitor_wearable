@@ -105,7 +105,7 @@ static void hrs_notify(void)
 	if (heartrate == 160U) {
 		heartrate = 90U;
 	}
-	printk("mesaured heart rate=%d\n", heartrate);
+	//printk("mesaured heart rate=%d\n", heartrate);
 	bt_hrs_notify(heartrate);
 }
 
@@ -140,11 +140,11 @@ void main(void)
 		k_sleep(K_SECONDS(1));
 
 		sensor_sample_fetch(dev);
-		sensor_channel_get(dev, SENSOR_CHAN_RED, &red);
-		sensor_channel_get(dev, SENSOR_CHAN_IR, &IR);
+		//sensor_channel_get(dev, SENSOR_CHAN_RED, &red);
+		//sensor_channel_get(dev, SENSOR_CHAN_IR, &IR);
 		/* Print green LED data*/
-		printf("red=%d\n", red.val1);
-		printf("IR=%d\n", IR.val1);
+		//printf("red=%d\n", red.val1);
+		//printf("IR=%d\n", IR.val1);
 
 		/* Heartrate measurements simulation */
 		hrs_notify();

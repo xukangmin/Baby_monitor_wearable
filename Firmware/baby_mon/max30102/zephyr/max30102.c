@@ -13,7 +13,7 @@
 #include "algorithm.h"
 
 
-#define BUFFER_LENGTH 100
+#define BUFFER_LENGTH 200
 
 static uint16_t _i2c_addr;
 
@@ -486,6 +486,45 @@ static int max30102_init(const struct device *dev)
 	return 0;
 }
 
+
+// //Configuration Options 
+// //FIFO Configuration(Register address 0x08)
+// //sampleAverage(Table 3. Sample Averaging)
+// #define SAMPLEAVG_1     0
+// #define SAMPLEAVG_2     1
+// #define SAMPLEAVG_4     2
+// #define SAMPLEAVG_8     3
+// #define SAMPLEAVG_16    4
+// #define SAMPLEAVG_32    5
+
+// //Mode configuration(Register address 0x09)
+// //ledMode(Table 4. Mode Control)
+// #define MODE_REDONLY    2
+// #define MODE_RED_IR     3
+// #define MODE_MULTILED   7
+
+// //Particle sensing configuration(Register address 0x0A)
+// //adcRange(Table 5. SpO2 ADC Range Control)
+// #define ADCRANGE_2048   0
+// #define ADCRANGE_4096   1
+// #define ADCRANGE_8192   2
+// #define ADCRANGE_16384  3
+// //sampleRate(Table 6. SpO2 Sample Rate Control)
+// #define SAMPLERATE_50   0 
+// #define SAMPLERATE_100  1
+// #define SAMPLERATE_200  2
+// #define SAMPLERATE_400  3
+// #define SAMPLERATE_800  4
+// #define SAMPLERATE_1000 5
+// #define SAMPLERATE_1600 6
+// #define SAMPLERATE_3200 7
+// //pulseWidth(Table 7. LED Pulse Width Control)
+// #define PULSEWIDTH_69   0 
+// #define PULSEWIDTH_118  1
+// #define PULSEWIDTH_215  2
+// #define PULSEWIDTH_411  3
+
+
 static struct max30102_config max30102_config = {
 	.i2c_label = DT_INST_BUS_LABEL(0),
 	.i2c_addr = DT_INST_REG_ADDR(0),
@@ -494,7 +533,7 @@ static struct max30102_config max30102_config = {
 	.ledMode = MODE_MULTILED,
 	.sampleRate = SAMPLERATE_400,
 	.pulseWidth = PULSEWIDTH_411,
-	.adcRange = ADCRANGE_4096
+	.adcRange = ADCRANGE_16384
 };
 
 static struct max30102_data max30102_data;
