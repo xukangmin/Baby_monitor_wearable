@@ -4148,7 +4148,7 @@ IPC Nominal Density</description>
 <busses>
 </busses>
 <nets>
-<net name="N$1" class="0">
+<net name="SWDIO" class="0">
 <segment>
 <pinref part="U1" gate="G$4" pin="SWDIO"/>
 <wire x1="99.06" y1="96.52" x2="78.74" y2="96.52" width="0.1524" layer="91"/>
@@ -4156,7 +4156,7 @@ IPC Nominal Density</description>
 <pinref part="J11" gate="G$1" pin="1"/>
 </segment>
 </net>
-<net name="N$2" class="0">
+<net name="SWDCLK" class="0">
 <segment>
 <pinref part="U1" gate="G$4" pin="SWDCLK"/>
 <wire x1="99.06" y1="99.06" x2="68.58" y2="99.06" width="0.1524" layer="91"/>
@@ -4164,7 +4164,7 @@ IPC Nominal Density</description>
 <pinref part="J10" gate="G$1" pin="1"/>
 </segment>
 </net>
-<net name="N$3" class="0">
+<net name="RESET" class="0">
 <segment>
 <pinref part="U1" gate="G$4" pin="!RESET"/>
 <wire x1="99.06" y1="101.6" x2="55.88" y2="101.6" width="0.1524" layer="91"/>
