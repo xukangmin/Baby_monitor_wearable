@@ -3947,7 +3947,8 @@ IPC Nominal Density</description>
 <wire x1="60.96" y1="55.88" x2="76.2" y2="55.88" width="0.1524" layer="91"/>
 <junction x="60.96" y="66.04"/>
 <pinref part="C7" gate="G$1" pin="1"/>
-<wire x1="60.96" y1="55.88" x2="60.96" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="55.88" x2="60.96" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="50.8" x2="60.96" y2="45.72" width="0.1524" layer="91"/>
 <wire x1="60.96" y1="45.72" x2="55.88" y2="45.72" width="0.1524" layer="91"/>
 <junction x="60.96" y="55.88"/>
 <wire x1="60.96" y1="55.88" x2="55.88" y2="55.88" width="0.1524" layer="91"/>
@@ -3967,6 +3968,9 @@ IPC Nominal Density</description>
 <pinref part="L1" gate="L$1" pin="1"/>
 <wire x1="55.88" y1="53.34" x2="55.88" y2="55.88" width="0.1524" layer="91"/>
 <junction x="55.88" y="55.88"/>
+<pinref part="U1" gate="G$1" pin="VDDH"/>
+<wire x1="76.2" y1="50.8" x2="60.96" y2="50.8" width="0.1524" layer="91"/>
+<junction x="60.96" y="50.8"/>
 </segment>
 </net>
 <net name="GND" class="0">

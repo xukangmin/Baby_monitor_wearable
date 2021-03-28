@@ -4639,13 +4639,6 @@ IPC Nominal Density</description>
 <junction x="101.6" y="40.64"/>
 </segment>
 </net>
-<net name="INT" class="0">
-<segment>
-<pinref part="U1" gate="G$2" pin="P1.13"/>
-<wire x1="152.4" y1="91.44" x2="139.7" y2="91.44" width="0.1524" layer="91"/>
-<label x="142.24" y="91.44" size="1.778" layer="95"/>
-</segment>
-</net>
 <net name="DI" class="0">
 <segment>
 <pinref part="U1" gate="G$3" pin="P0.16/QPSI_[3]"/>
@@ -4789,6 +4782,11 @@ IPC Nominal Density</description>
 <pinref part="U5" gate="A" pin="MFIO"/>
 <wire x1="35.56" y1="45.72" x2="38.1" y2="45.72" width="0.1524" layer="91"/>
 <label x="35.56" y="63.5" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U1" gate="G$2" pin="P1.13"/>
+<wire x1="152.4" y1="91.44" x2="134.62" y2="91.44" width="0.1524" layer="91"/>
+<label x="144.78" y="91.44" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
