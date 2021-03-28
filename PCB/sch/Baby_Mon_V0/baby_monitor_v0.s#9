@@ -3783,7 +3783,7 @@ IPC Nominal Density</description>
 <part name="C13" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="0.1uF"/>
 <part name="SUPPLY8" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="R4" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_RESISTOR" device="_0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="4.7K"/>
-<part name="U$2" library="graftel-internal-ic" deviceset="MICROBUILDER_APA102" device="2020"/>
+<part name="U$2" library="graftel-internal-ic" deviceset="MICROBUILDER_APA102" device="2020" override_package3d_urn="urn:adsk.eagle:package:27369325/2" override_package_urn="urn:adsk.eagle:footprint:27369326/1"/>
 <part name="SUPPLY9" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="GND14" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="S1" library="graftel-internal-ic" deviceset="KMR421GULCLFS" device="" override_package3d_urn="urn:adsk.eagle:package:27368902/2" override_package_urn="urn:adsk.eagle:footprint:27368903/1"/>

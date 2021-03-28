@@ -1852,7 +1852,7 @@ Please make sure your boards conform to these design rules.
 <wire x1="11.659446875" y1="4.799753125" x2="11.659446875" y2="4.928446875" width="0.127" layer="16"/>
 <via x="-2.6416" y="6.477" extent="1-16" drill="0.3048"/>
 </signal>
-<signal name="N$1">
+<signal name="SWDIO">
 <contactref element="U1" pad="AA31"/>
 <contactref element="J11" pad="P$1"/>
 <wire x1="11.938" y1="16.002" x2="11.951" y2="16.0956" width="0.127" layer="1"/>
@@ -1863,7 +1863,7 @@ Please make sure your boards conform to these design rules.
 <wire x1="11.5062" y1="14.5796" x2="11.938" y2="15.0114" width="0.127" layer="1"/>
 <wire x1="11.938" y1="15.0114" x2="11.938" y2="16.002" width="0.127" layer="1"/>
 </signal>
-<signal name="N$2">
+<signal name="SWCLK">
 <contactref element="U1" pad="W31"/>
 <contactref element="J10" pad="P$1"/>
 <wire x1="10.811309375" y1="17.037725" x2="10.8762" y2="17.1162" width="0.127" layer="1"/>
@@ -1874,7 +1874,7 @@ Please make sure your boards conform to these design rules.
 <wire x1="10.811309375" y1="16.145309375" x2="10.811309375" y2="17.037725" width="0.127" layer="1"/>
 <wire x1="6.693" y1="13.33950625" x2="9.40629375" y2="16.0528" width="0.127" layer="1"/>
 </signal>
-<signal name="N$3">
+<signal name="RESET">
 <contactref element="U1" pad="AC31"/>
 <contactref element="J9" pad="P$1"/>
 <wire x1="12.827" y1="14.986" x2="12.838" y2="15.0686" width="0.127" layer="1"/>

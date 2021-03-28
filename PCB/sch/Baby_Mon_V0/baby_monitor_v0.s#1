@@ -3949,7 +3949,7 @@ IPC Nominal Density</description>
 <part name="L4" library="Adafruit Circuit Playground Bluefruit" deviceset="NORDIC_MISC_INDUCTOR" device="_0603_N" value="10uH"/>
 <part name="C1" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="1uF"/>
 <part name="C2" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" override_package3d_urn="urn:adsk.eagle:package:27369007/2" override_package_urn="urn:adsk.eagle:footprint:27369008/1" override_locally_modified="yes" value="1uF"/>
-<part name="C3" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="1.0uF"/>
+<part name="C3" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="1uF"/>
 <part name="C4" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="0.1uF"/>
 <part name="C5" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="0.1uF"/>
 <part name="C6" library="Adafruit Circuit Playground Bluefruit" deviceset="MICROBUILDER_CAP_CERAMIC" device="_0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="1uF"/>

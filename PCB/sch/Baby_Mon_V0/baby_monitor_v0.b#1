@@ -1248,7 +1248,7 @@ Please make sure your boards conform to these design rules.
 <attribute name="NAME" x="0.973103125" y="13.2992" size="0.6096" layer="25" rot="R180"/>
 <attribute name="VALUE" x="1.163603125" y="15.2677" size="0.6096" layer="27" rot="R180"/>
 </element>
-<element name="C3" library="Adafruit Circuit Playground Bluefruit" package="MICROBUILDER__0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="1.0uF" x="-1.3212" y="9.7742" smashed="yes" rot="R270">
+<element name="C3" library="Adafruit Circuit Playground Bluefruit" package="MICROBUILDER__0402MP" package3d_urn="urn:adsk.eagle:package:27347952/3" value="1uF" x="-1.3212" y="9.7742" smashed="yes" rot="R270">
 <attribute name="NAME" x="-0.6227" y="10.6632" size="0.6096" layer="25" rot="R270"/>
 <attribute name="VALUE" x="-2.5912" y="10.8537" size="0.6096" layer="27" rot="R270"/>
 </element>
