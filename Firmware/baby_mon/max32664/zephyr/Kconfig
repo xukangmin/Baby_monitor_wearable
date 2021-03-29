@@ -1,0 +1,8 @@
+# MAX30101 heart rate sensor
+
+# Copyright (c) 2017, NXP
+# SPDX-License-Identifier: Apache-2.0
+
+config MAX32664
+	bool "MAX32664 Bio Sensor Hub Module"
+	depends on I2C

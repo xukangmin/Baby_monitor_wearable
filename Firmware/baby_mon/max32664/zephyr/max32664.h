@@ -1,6 +1,11 @@
 #ifndef _MAX32664_H
 #define _MAX32664_H
 
+
+#include <drivers/sensor.h>
+#include <drivers/i2c.h>
+#include <drivers/gpio.h>
+
 #define WRITE_FIFO_INPUT_BYTE  0x04
 #define DISABLE                0x00
 #define ENABLE                 0x01
@@ -21,7 +26,7 @@
 
 #define ENABLE_CMD_DELAY          45 // Milliseconds
 #define CMD_DELAY                 6  // Milliseconds
-#define MAXFAST_ARRAY_SIZE        6  // Number of bytes....
+#define MAXFAST_ARRAY_SIZE        7  // Number of bytes.... plus status byte
 #define MAXFAST_EXTENDED_DATA     5
 #define MAX30101_LED_ARRAY        12 // 4 values of 24 bit (3 byte) LED values
 
@@ -287,6 +292,14 @@ enum IDENTITY_INDEX_BYTES {
 };
 
 
+struct max32664_config {
+	const char *i2c_label;
+	uint16_t i2c_addr;
+};
+
+struct max32664_data {
+	const struct device *i2c;
+};
 
 
 #endif
