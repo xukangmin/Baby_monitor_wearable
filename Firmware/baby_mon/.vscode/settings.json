@@ -26,7 +26,8 @@
         "random": "c",
         "new": "c",
         "string_view": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "memory": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

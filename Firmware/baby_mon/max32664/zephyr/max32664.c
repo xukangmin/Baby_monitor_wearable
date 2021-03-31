@@ -2,6 +2,8 @@
 
 #define DT_DRV_COMPAT max_max32664
 
+#define RESET_GPIO_NODE DT_NODELABEL(rstpin)
+//#define RESETPIN	DT_GPIO_LABEL(RESET_GPIO_NODE, gpios)
 
 #include <logging/log.h>
 
@@ -498,6 +500,17 @@ static int max32664_init(const struct device *dev)
 
 	const struct max32664_config *config = dev->config;
 	struct max32664_data *data = dev->data;
+
+  // const struct device *gpio;
+
+  // gpio = device_get_binding(RESETPIN);
+
+  // if (gpio == NULL)
+  // {
+  //   	LOG_ERR("Could not get pointer to %s device.",
+  //     RESETPIN);
+  //     return -EINVAL;
+  // }
 
 	/* Get the I2C device */
 	data->i2c = device_get_binding(config->i2c_label);
