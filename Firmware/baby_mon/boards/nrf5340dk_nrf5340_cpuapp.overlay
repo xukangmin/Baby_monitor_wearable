@@ -7,21 +7,7 @@
         compatible = "max,max32664";
         reg = < 0x55 >;
         label = "MAX32664";
-    };
-};
-
-&gpio0 {
-    rstpin: pulse-reset {
-        gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
-        label = "PULSE RESET";
-        status = "okay";
-    };
-};
-
-&gpio1 {
-    mfiopin: pulse-mfio {
-        gpios = <&gpio1 13 GPIO_ACTIVE_LOW>;
-        label = "PULSE MFIO"; 
-        status = "okay";
+        rst-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
+        mfio-gpios = <&gpio1 13 GPIO_ACTIVE_LOW>;
     };
 };

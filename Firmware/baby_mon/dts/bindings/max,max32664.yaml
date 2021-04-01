@@ -1,0 +1,24 @@
+# Copyright (c) 2019 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+    max32664
+
+compatible: "max,max32664"
+
+include: base.yaml
+
+properties:
+  rst-gpios:
+    type: phandle-array
+    required: true
+    description: |
+      Pin on which sensor communication will be performed.
+
+      Control and data are encoded by the duration of active low
+      signals.  A pull up may be appropriate.
+  mfio-gpios:
+    type: phandle-array
+    required: true
+    description: |
+      Multifunction pin
