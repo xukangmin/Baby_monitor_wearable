@@ -513,8 +513,23 @@ static int max32664_init(const struct device *dev)
       return -EINVAL;
   }
 
+  
+
   gpio_pin_configure(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), GPIO_OUTPUT | DT_INST_GPIO_FLAGS(0, rst_gpios));
   gpio_pin_configure(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios),  DT_INST_GPIO_FLAGS(0, mfio_gpios));
+
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
+  k_msleep(1000);
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), true);
+  k_msleep(1000);
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
+  k_msleep(1000);
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), true);
+  k_msleep(1000);
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
+  k_msleep(1000);
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), true);
+  k_msleep(1000);
 
   gpio_pin_set(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios), true);
   gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);

@@ -113,14 +113,14 @@ void main(void)
 {
 	int err;
 
-	struct sensor_value red;
-	struct sensor_value IR;
-	const struct device *dev = device_get_binding(DT_LABEL(DT_INST(0, max_max32664)));
+	//struct sensor_value red;
+	//struct sensor_value IR;
+	//const struct device *dev = device_get_binding(DT_LABEL(DT_INST(0, max_max32664)));
 
-	if (dev == NULL) {
-		printf("Could not get max32664 device\n");
-		return;
-	}
+	//if (dev == NULL) {
+//		printf("Could not get max32664 device\n");
+//		return;
+//	}
 
 	err = bt_enable(NULL);
 	if (err) {
@@ -139,7 +139,7 @@ void main(void)
 	while (1) {
 		k_sleep(K_SECONDS(1));
 
-		sensor_sample_fetch(dev);
+		//sensor_sample_fetch(dev);
 		//sensor_channel_get(dev, SENSOR_CHAN_RED, &red);
 		//sensor_channel_get(dev, SENSOR_CHAN_IR, &IR);
 		/* Print green LED data*/
