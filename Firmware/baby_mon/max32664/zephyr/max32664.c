@@ -20,7 +20,6 @@ uint8_t _sampleRate = 100;
 static uint16_t _i2c_addr;
 const struct device *_i2c_device;
 
-
 uint8_t bpmArr[MAXFAST_ARRAY_SIZE];
 uint8_t bpmArrTwo[MAXFAST_ARRAY_SIZE + MAXFAST_EXTENDED_DATA];
 uint8_t senArr[MAX30101_LED_ARRAY];
@@ -404,6 +403,7 @@ struct bioData readBpm(){
     libBpm.heartRate = 0;
     libBpm.confidence = 0;
     libBpm.oxygen = 0;
+    LOG_INF("communication error");
     return libBpm;
   }
 
@@ -477,6 +477,11 @@ struct bioData readBpm(){
 static int max32664_sample_fetch(const struct device *dev,
 				 enum sensor_channel chan)
 {
+  struct bioData _bioData = readBpm();
+
+  LOG_INF("bpm=%d",  _bioData.heartRate);
+  LOG_INF("status=%d",  _bioData.status);
+
 	return 0;
 }
 
@@ -484,6 +489,8 @@ static int max32664_channel_get(const struct device *dev,
 				enum sensor_channel chan,
 				struct sensor_value *val)
 {
+
+  
 
 	return 0;
 }
@@ -515,21 +522,8 @@ static int max32664_init(const struct device *dev)
 
   
 
-  gpio_pin_configure(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), GPIO_OUTPUT_HIGH | DT_INST_GPIO_FLAGS(0, rst_gpios));
+  gpio_pin_configure(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), GPIO_OUTPUT | DT_INST_GPIO_FLAGS(0, rst_gpios));
   gpio_pin_configure(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios),  DT_INST_GPIO_FLAGS(0, mfio_gpios));
-
-  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
-  k_msleep(1000);
-  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), true);
-  k_msleep(1000);
-  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
-  k_msleep(1000);
-  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), true);
-  k_msleep(1000);
-  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
-  k_msleep(1000);
-  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), true);
-  k_msleep(1000);
 
   gpio_pin_set(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios), true);
   gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
@@ -580,6 +574,10 @@ static int max32664_init(const struct device *dev)
   else {
      LOG_INF("Error configuring sensor.%d", error);
   }
+
+   uint8_t returnByte = readByte3(IDENTITY, READ_MCU_TYPE, NO_WRITE);
+
+  LOG_INF("mcu_info=0x%02x",returnByte);
 
   k_msleep(4000);
 

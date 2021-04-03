@@ -299,6 +299,7 @@ struct max32664_config {
 
 struct max32664_data {
 	const struct device *i2c;
+  struct bioData outData;
 };
 
 
