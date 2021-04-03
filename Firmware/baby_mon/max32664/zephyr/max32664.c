@@ -2,6 +2,8 @@
 
 #define DT_DRV_COMPAT max_max32664
 
+#define RESET_GPIO_NODE DT_NODELABEL(rstpin)
+//#define RESETPIN	DT_GPIO_LABEL(RESET_GPIO_NODE, gpios)
 
 #include <logging/log.h>
 
@@ -498,6 +500,49 @@ static int max32664_init(const struct device *dev)
 
 	const struct max32664_config *config = dev->config;
 	struct max32664_data *data = dev->data;
+
+  const struct device *rst_gpio, *mfio_gpio;
+
+  rst_gpio = device_get_binding(DT_INST_GPIO_LABEL(0, rst_gpios));
+  mfio_gpio = device_get_binding(DT_INST_GPIO_LABEL(0, mfio_gpios));
+
+  if (rst_gpio == NULL || mfio_gpio == NULL)
+  {
+    	LOG_ERR("Could not get pointer to %s device.",
+      DT_INST_GPIO_LABEL(0, rst_gpios));
+      return -EINVAL;
+  }
+
+  
+
+  gpio_pin_configure(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), GPIO_OUTPUT | DT_INST_GPIO_FLAGS(0, rst_gpios));
+  gpio_pin_configure(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios),  DT_INST_GPIO_FLAGS(0, mfio_gpios));
+
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
+  k_msleep(1000);
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), true);
+  k_msleep(1000);
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
+  k_msleep(1000);
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), true);
+  k_msleep(1000);
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
+  k_msleep(1000);
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), true);
+  k_msleep(1000);
+
+  gpio_pin_set(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios), true);
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
+  k_msleep(10);
+  gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), true);
+  k_msleep(1000);
+   gpio_pin_configure(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios),  DT_INST_GPIO_FLAGS(0, mfio_gpios));
+
+  // const struct device *gpio;
+
+  // gpio = device_get_binding(RESETPIN);
+
+
 
 	/* Get the I2C device */
 	data->i2c = device_get_binding(config->i2c_label);
