@@ -515,7 +515,7 @@ static int max32664_init(const struct device *dev)
 
   
 
-  gpio_pin_configure(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), GPIO_OUTPUT | DT_INST_GPIO_FLAGS(0, rst_gpios));
+  gpio_pin_configure(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), GPIO_OUTPUT_HIGH | DT_INST_GPIO_FLAGS(0, rst_gpios));
   gpio_pin_configure(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios),  DT_INST_GPIO_FLAGS(0, mfio_gpios));
 
   gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
