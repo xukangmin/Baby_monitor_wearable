@@ -8,6 +8,6 @@
         reg = < 0x55 >;
         label = "MAX32664";
         rst-gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
-        mfio-gpios = <&gpio1 13 GPIO_ACTIVE_HIGH>;
+        mfio-gpios = <&gpio1 13 GPIO_PULL_UP>;
     };
 };

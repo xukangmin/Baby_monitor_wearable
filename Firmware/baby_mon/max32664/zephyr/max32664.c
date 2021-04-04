@@ -37,14 +37,16 @@ LOG_MODULE_REGISTER(MAX32664, CONFIG_SENSOR_LOG_LEVEL);
 uint8_t writeByte44(uint8_t _familyByte, uint8_t _indexByte, uint8_t _writeByte, uint8_t _writeVal)
 {
 
-  uint8_t tmpBuf[4];
+  uint8_t tmpBuf[5];
 
   tmpBuf[0] = _familyByte;
   tmpBuf[1] = _indexByte;
   tmpBuf[2] = _writeByte;
-  tmpBuf[3] = _writeVal;
+  tmpBuf[3] = _writeVal >> 8;
+  tmpBuf[4] = _writeVal;
 
-  i2c_write(_i2c_device, tmpBuf, 4, _i2c_addr);
+
+  i2c_write(_i2c_device, tmpBuf, 5, _i2c_addr);
 
   k_msleep(CMD_DELAY);
 
@@ -212,7 +214,7 @@ uint8_t enableWrite(uint8_t _familyByte, uint8_t _indexByte, uint8_t _enableByte
   tmpBuf[1] = _indexByte;
   tmpBuf[2] = _enableByte;
 
-  i2c_write(_i2c_device, tmpBuf, 2, _i2c_addr);
+  i2c_write(_i2c_device, tmpBuf, 3, _i2c_addr);
 
    k_msleep(ENABLE_CMD_DELAY);
 
@@ -351,9 +353,14 @@ uint8_t configBpm(uint8_t mode){
   if( statusChauf != SUCCESS )
     return statusChauf;
 
+  LOG_INF("config Max30101");
+
   statusChauf = max30101Control(ENABLE);
+  
+  LOG_INF("statusChauf=0x%02x", statusChauf);
   if( statusChauf != SUCCESS )
     return statusChauf;
+  
 
   statusChauf = maximFastAlgoControl(mode);
   if( statusChauf != SUCCESS )
@@ -398,6 +405,8 @@ struct bioData readBpm(){
   uint8_t statusChauf; // The status chauffeur captures return values.
 
   statusChauf = readSensorHubStatus();
+
+ // LOG_INF("Sensor Status=0x%02x", statusChauf);
 
   if (statusChauf == 1){ // Communication Error
     libBpm.heartRate = 0;
@@ -480,6 +489,8 @@ static int max32664_sample_fetch(const struct device *dev,
   struct bioData _bioData = readBpm();
 
   LOG_INF("bpm=%d",  _bioData.heartRate);
+  LOG_INF("confidence=%d",  _bioData.confidence);
+  LOG_INF("oxygen=%d",  _bioData.oxygen);
   LOG_INF("status=%d",  _bioData.status);
 
 	return 0;
@@ -523,14 +534,14 @@ static int max32664_init(const struct device *dev)
   
 
   gpio_pin_configure(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), GPIO_OUTPUT | DT_INST_GPIO_FLAGS(0, rst_gpios));
-  gpio_pin_configure(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios),  DT_INST_GPIO_FLAGS(0, mfio_gpios));
+  gpio_pin_configure(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios),  GPIO_OUTPUT);
 
   gpio_pin_set(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios), true);
   gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), false);
   k_msleep(10);
   gpio_pin_set(rst_gpio, DT_INST_GPIO_PIN(0, rst_gpios), true);
   k_msleep(1000);
-   gpio_pin_configure(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios),  DT_INST_GPIO_FLAGS(0, mfio_gpios));
+  gpio_pin_configure(mfio_gpio, DT_INST_GPIO_PIN(0, mfio_gpios),  DT_INST_GPIO_FLAGS(0, mfio_gpios));
 
   // const struct device *gpio;
 
@@ -548,13 +559,6 @@ static int max32664_init(const struct device *dev)
 	_i2c_device = data->i2c;
 	_i2c_addr = config->i2c_addr;
 
-
-  // digitalWrite(_mfioPin, HIGH);
-  // digitalWrite(_resetPin, LOW);
-  // delay(10);
-  // digitalWrite(_resetPin, HIGH);
-  // delay(1000);
-  // pinMode(_mfioPin, INPUT_PULLUP); // To be used as an interrupt later
 
   uint8_t responseByte = readByte2(READ_DEVICE_MODE, 0x00); // 0x00 only possible Index Byte.
 
