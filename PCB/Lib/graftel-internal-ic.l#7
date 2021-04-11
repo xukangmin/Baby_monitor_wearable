@@ -24376,9 +24376,9 @@ Digikey Part NO
 <text x="-3.2766" y="-0.635" size="1.27" layer="25" ratio="6" rot="SR0">&gt;Name</text>
 </package>
 <package name="BC-2017-TR">
-<smd name="P$1" x="0" y="0" dx="4" dy="4.5" layer="1"/>
-<smd name="P$2" x="-7.59" y="0" dx="2.6" dy="4.5" layer="1"/>
-<smd name="P$3" x="7.59" y="0" dx="2.6" dy="4.5" layer="1"/>
+<smd name="P$1" x="0" y="0" dx="4" dy="4" layer="1"/>
+<smd name="P$2" x="-7.59" y="0" dx="2.6" dy="4" layer="1"/>
+<smd name="P$3" x="7.59" y="0" dx="2.6" dy="4" layer="1"/>
 </package>
 <package name="ADAFRUIT_WIRELESS_ANT_2450AT18B100">
 <wire x1="-2.473" y1="0.983" x2="2.473" y2="0.983" width="0.0508" layer="39"/>

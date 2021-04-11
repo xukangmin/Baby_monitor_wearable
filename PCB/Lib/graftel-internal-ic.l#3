@@ -24289,7 +24289,7 @@ Digikey Part NO
 <wire x1="0.3048" y1="2.8448" x2="-0.3048" y2="2.8448" width="0.1524" layer="51" curve="-180"/>
 <text x="-3.2766" y="-0.635" size="1.27" layer="25" ratio="6" rot="SR0">&gt;Name</text>
 </package>
-<package name="21-0137_T833+2_MXM">
+<package name="21-0137_T833+2_MXM" urn="urn:adsk.eagle:footprint:27347978/1">
 <smd name="1" x="-1.4986" y="0.975" dx="0.7112" dy="0.3048" layer="1"/>
 <smd name="2" x="-1.4986" y="0.325" dx="0.7112" dy="0.3048" layer="1"/>
 <smd name="3" x="-1.4986" y="-0.325" dx="0.7112" dy="0.3048" layer="1"/>
@@ -24303,7 +24303,6 @@ Digikey Part NO
 <wire x1="1.6764" y1="1.6764" x2="-1.6764" y2="1.6764" width="0.1524" layer="21"/>
 <wire x1="-2.4638" y1="0.9652" x2="-2.667" y2="0.9652" width="0.1524" layer="21" curve="-180"/>
 <wire x1="-2.667" y1="0.9652" x2="-2.4638" y2="0.9652" width="0.1524" layer="21" curve="-180"/>
-<text x="-1.7272" y="-0.635" size="1.27" layer="21" ratio="6" rot="SR0">&gt;Value</text>
 <wire x1="-1.5494" y1="-1.5494" x2="1.5494" y2="-1.5494" width="0.1524" layer="51"/>
 <wire x1="1.5494" y1="-1.5494" x2="1.5494" y2="1.5494" width="0.1524" layer="51"/>
 <wire x1="1.5494" y1="1.5494" x2="0.3048" y2="1.5494" width="0.1524" layer="51"/>
@@ -24313,6 +24312,7 @@ Digikey Part NO
 <wire x1="-1.0668" y1="0.9652" x2="-1.2192" y2="0.9652" width="0" layer="51" curve="-180"/>
 <wire x1="-1.2192" y1="0.9652" x2="-1.0668" y2="0.9652" width="0" layer="51" curve="-180"/>
 <wire x1="0.3048" y1="1.5494" x2="-0.3048" y2="1.5494" width="0.1524" layer="51" curve="-180"/>
+<text x="-1.7272" y="-0.635" size="1.27" layer="21" ratio="6" rot="SR0">&gt;Value</text>
 <text x="-3.2766" y="-0.635" size="1.27" layer="25" ratio="6" rot="SR0">&gt;Name</text>
 </package>
 <package name="21-0137_T833+2_MXM-L">
@@ -25532,6 +25532,11 @@ IPC Nominal Density</description>
 &lt;p&gt;121-pin collapsing BGA package with 0.50 mm col pitch and 0.50 mm row pitch with body size 7.00 X 7.00 X 0.85 mm&lt;/p&gt;</description>
 <packageinstances>
 <packageinstance name="BGA121C50P11X11_700X700X85N"/>
+</packageinstances>
+</package3d>
+<package3d name="21-0137_T833+2_MXM" urn="urn:adsk.eagle:package:27347977/2" type="model">
+<packageinstances>
+<packageinstance name="21-0137_T833+2_MXM"/>
 </packageinstances>
 </package3d>
 </packages3d>
@@ -41043,6 +41048,9 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <connect gate="A" pin="SDA" pad="1"/>
 <connect gate="A" pin="VDD" pad="8"/>
 </connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:27347977/2"/>
+</package3dinstances>
 <technologies>
 <technology name="">
 <attribute name="BUILT_BY" value="EMA_UL_Team" constant="no"/>

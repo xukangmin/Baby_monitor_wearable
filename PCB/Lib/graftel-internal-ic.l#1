@@ -7,7 +7,7 @@
 <setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="mil" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -25449,6 +25449,130 @@ IPC Nominal Density</description>
 <smd name="3" x="2.05" y="-0.8" dx="0.9" dy="1" layer="1"/>
 <smd name="4" x="2.05" y="0.8" dx="0.9" dy="1" layer="1"/>
 </package>
+<package name="21-100264_90-100089_MXM">
+<smd name="1" x="-1.45" y="1.2" dx="0.7112" dy="0.2032" layer="1"/>
+<smd name="2" x="-1.45" y="0.8" dx="0.7112" dy="0.2032" layer="1"/>
+<smd name="3" x="-1.45" y="0.4" dx="0.7112" dy="0.2032" layer="1"/>
+<smd name="4" x="-1.45" y="0" dx="0.7112" dy="0.2032" layer="1"/>
+<smd name="5" x="-1.45" y="-0.4" dx="0.7112" dy="0.2032" layer="1"/>
+<smd name="6" x="-1.45" y="-0.8" dx="0.7112" dy="0.2032" layer="1"/>
+<smd name="7" x="-1.2" y="-1.45" dx="0.7112" dy="0.2032" layer="1" rot="R90"/>
+<smd name="8" x="-0.8" y="-1.45" dx="0.7112" dy="0.2032" layer="1" rot="R90"/>
+<smd name="9" x="-0.4" y="-1.45" dx="0.7112" dy="0.2032" layer="1" rot="R90"/>
+<smd name="10" x="0" y="-1.45" dx="0.7112" dy="0.2032" layer="1" rot="R90"/>
+<smd name="11" x="0.4" y="-1.45" dx="0.7112" dy="0.2032" layer="1" rot="R90"/>
+<smd name="12" x="0.8" y="-1.45" dx="0.7112" dy="0.2032" layer="1" rot="R90"/>
+<smd name="13" x="1.45" y="-1.2" dx="0.7112" dy="0.2032" layer="1" rot="R180"/>
+<smd name="14" x="1.45" y="-0.8" dx="0.7112" dy="0.2032" layer="1" rot="R180"/>
+<smd name="15" x="1.45" y="-0.4" dx="0.7112" dy="0.2032" layer="1" rot="R180"/>
+<smd name="16" x="1.45" y="0" dx="0.7112" dy="0.2032" layer="1" rot="R180"/>
+<smd name="17" x="1.45" y="0.4" dx="0.7112" dy="0.2032" layer="1" rot="R180"/>
+<smd name="18" x="1.45" y="0.8" dx="0.7112" dy="0.2032" layer="1" rot="R180"/>
+<smd name="19" x="1.2" y="1.45" dx="0.7112" dy="0.2032" layer="1" rot="R270"/>
+<smd name="20" x="0.8" y="1.45" dx="0.7112" dy="0.2032" layer="1" rot="R270"/>
+<smd name="21" x="0.4" y="1.45" dx="0.7112" dy="0.2032" layer="1" rot="R270"/>
+<smd name="22" x="0" y="1.45" dx="0.7112" dy="0.2032" layer="1" rot="R270"/>
+<smd name="23" x="-0.4" y="1.45" dx="0.7112" dy="0.2032" layer="1" rot="R270"/>
+<smd name="24" x="-0.8" y="1.45" dx="0.7112" dy="0.2032" layer="1" rot="R270"/>
+<smd name="25" x="0" y="0" dx="1.7018" dy="1.7018" layer="1"/>
+<polygon width="0.0254" layer="29">
+<vertex x="1.0984" y="-1.8056"/>
+<vertex x="1.0986" y="-1.0986"/>
+<vertex x="1.8056" y="-1.0984"/>
+<vertex x="1.8056" y="-1.3016"/>
+<vertex x="1.3016" y="-1.8056"/>
+</polygon>
+<polygon width="0.0254" layer="29">
+<vertex x="-1.0984" y="1.8056"/>
+<vertex x="-1.0984" y="1.0984"/>
+<vertex x="-1.8056" y="1.0984"/>
+<vertex x="-1.8056" y="1.3016"/>
+<vertex x="-1.3016" y="1.8056"/>
+</polygon>
+<polygon width="0.0254" layer="29">
+<vertex x="1.0984" y="1.8056"/>
+<vertex x="1.0986" y="1.0984"/>
+<vertex x="1.8056" y="1.0984"/>
+<vertex x="1.8056" y="1.3016"/>
+<vertex x="1.3016" y="1.8056"/>
+</polygon>
+<polygon width="0.0254" layer="29">
+<vertex x="-1.8056" y="-1.0984"/>
+<vertex x="-1.0944" y="-1.0984"/>
+<vertex x="-1.0984" y="-1.8056"/>
+<vertex x="-1.3016" y="-1.8056"/>
+<vertex x="-1.8056" y="-1.3016"/>
+</polygon>
+<wire x1="-2.413" y1="1.27" x2="-2.667" y2="1.27" width="0.254" layer="21" curve="-180"/>
+<wire x1="-2.667" y1="1.27" x2="-2.413" y2="1.27" width="0.254" layer="21" curve="-180"/>
+<text x="-1.7272" y="-0.635" size="1.27" layer="21" ratio="6" rot="SR0">&gt;Value</text>
+<wire x1="-1.4986" y1="0.2286" x2="-0.2286" y2="1.4986" width="0.1524" layer="51"/>
+<wire x1="-1.4986" y1="-1.4986" x2="1.4986" y2="-1.4986" width="0.1524" layer="51"/>
+<wire x1="1.4986" y1="-1.4986" x2="1.4986" y2="1.4986" width="0.1524" layer="51"/>
+<wire x1="1.4986" y1="1.4986" x2="-1.4986" y2="1.4986" width="0.1524" layer="51"/>
+<wire x1="-1.4986" y1="1.4986" x2="-1.4986" y2="-1.4986" width="0.1524" layer="51"/>
+<wire x1="-2.413" y1="1.27" x2="-2.667" y2="1.27" width="0.254" layer="51" curve="-180"/>
+<wire x1="-2.667" y1="1.27" x2="-2.413" y2="1.27" width="0.254" layer="51" curve="-180"/>
+<polygon width="0.0254" layer="1">
+<vertex x="1.0984" y="1.8056"/>
+<vertex x="1.0986" y="1.0984"/>
+<vertex x="1.8056" y="1.0984"/>
+<vertex x="1.8056" y="1.3016"/>
+<vertex x="1.3016" y="1.8056"/>
+</polygon>
+<polygon width="0.0254" layer="1">
+<vertex x="1.0984" y="-1.8056"/>
+<vertex x="1.0986" y="-1.0986"/>
+<vertex x="1.8056" y="-1.0984"/>
+<vertex x="1.8056" y="-1.3016"/>
+<vertex x="1.3016" y="-1.8056"/>
+</polygon>
+<polygon width="0.0254" layer="1">
+<vertex x="-1.8056" y="-1.0984"/>
+<vertex x="-1.0944" y="-1.0984"/>
+<vertex x="-1.0984" y="-1.8056"/>
+<vertex x="-1.3016" y="-1.8056"/>
+<vertex x="-1.8056" y="-1.3016"/>
+</polygon>
+<polygon width="0.0254" layer="1">
+<vertex x="-1.0984" y="1.8056"/>
+<vertex x="-1.0984" y="1.0984"/>
+<vertex x="-1.8056" y="1.0984"/>
+<vertex x="-1.8056" y="1.3016"/>
+<vertex x="-1.3016" y="1.8056"/>
+</polygon>
+<polygon width="0.0254" layer="31">
+<vertex x="1.0984" y="1.8056"/>
+<vertex x="1.0986" y="1.0984"/>
+<vertex x="1.8056" y="1.0984"/>
+<vertex x="1.8056" y="1.3016"/>
+<vertex x="1.3016" y="1.8056"/>
+</polygon>
+<polygon width="0.0254" layer="31">
+<vertex x="1.0984" y="-1.8056"/>
+<vertex x="1.0986" y="-1.0986"/>
+<vertex x="1.8056" y="-1.0984"/>
+<vertex x="1.8056" y="-1.3016"/>
+<vertex x="1.3016" y="-1.8056"/>
+</polygon>
+<polygon width="0.0254" layer="31">
+<vertex x="-1.8056" y="-1.0984"/>
+<vertex x="-1.0944" y="-1.0984"/>
+<vertex x="-1.0984" y="-1.8056"/>
+<vertex x="-1.3016" y="-1.8056"/>
+<vertex x="-1.8056" y="-1.3016"/>
+</polygon>
+<polygon width="0.0254" layer="31">
+<vertex x="-1.0984" y="1.8056"/>
+<vertex x="-1.0984" y="1.0984"/>
+<vertex x="-1.8056" y="1.0984"/>
+<vertex x="-1.8056" y="1.3016"/>
+<vertex x="-1.3016" y="1.8056"/>
+</polygon>
+<wire x1="-2.413" y1="1.27" x2="-2.667" y2="1.27" width="0.254" layer="22" curve="-180"/>
+<wire x1="-2.667" y1="1.27" x2="-2.413" y2="1.27" width="0.254" layer="22" curve="-180"/>
+<text x="-3.2766" y="-0.635" size="1.27" layer="25" ratio="6" rot="SR0">&gt;Name</text>
+</package>
 </packages>
 <packages3d>
 <package3d name="SHK20L" urn="urn:adsk.eagle:package:14071/1" type="box">
@@ -31029,6 +31153,39 @@ Environ. Sensor</text>
 <pin name="3" x="7.62" y="-2.54" visible="pad" length="short" direction="pas" rot="R180"/>
 <pin name="4" x="7.62" y="2.54" visible="pad" length="short" direction="pas" rot="R180"/>
 <pin name="G" x="7.62" y="0" visible="pad" length="short" direction="pwr" rot="R180"/>
+</symbol>
+<symbol name="MAX32664GTGA+">
+<pin name="MFIO" x="2.54" y="0" length="middle"/>
+<pin name="D.N.C._2" x="2.54" y="-2.54" length="middle" direction="nc"/>
+<pin name="N.C._2" x="2.54" y="-5.08" length="middle" direction="nc"/>
+<pin name="D.N.C._3" x="2.54" y="-7.62" length="middle" direction="nc"/>
+<pin name="D.N.C._4" x="2.54" y="-10.16" length="middle" direction="nc"/>
+<pin name="RSTN" x="2.54" y="-12.7" length="middle" direction="in"/>
+<pin name="VSS_2" x="2.54" y="-15.24" length="middle" direction="pwr"/>
+<pin name="32KOUT" x="2.54" y="-17.78" length="middle" direction="out"/>
+<pin name="32KIN" x="2.54" y="-20.32" length="middle" direction="in"/>
+<pin name="VSS" x="2.54" y="-22.86" length="middle" direction="pwr"/>
+<pin name="VDD_2" x="2.54" y="-25.4" length="middle" direction="pwr"/>
+<pin name="VCORE" x="2.54" y="-27.94" length="middle" direction="pwr"/>
+<pin name="SENSOR_SDA" x="53.34" y="-30.48" length="middle" direction="pas" rot="R180"/>
+<pin name="SENSOR_SCL" x="53.34" y="-27.94" length="middle" direction="pas" rot="R180"/>
+<pin name="N.C." x="53.34" y="-25.4" length="middle" direction="nc" rot="R180"/>
+<pin name="D.N.C._5" x="53.34" y="-22.86" length="middle" direction="nc" rot="R180"/>
+<pin name="D.N.C._6" x="53.34" y="-20.32" length="middle" direction="nc" rot="R180"/>
+<pin name="HR_INT" x="53.34" y="-17.78" length="middle" direction="in" rot="R180"/>
+<pin name="ACCEL_INT" x="53.34" y="-15.24" length="middle" direction="in" rot="R180"/>
+<pin name="D.N.C._7" x="53.34" y="-12.7" length="middle" direction="nc" rot="R180"/>
+<pin name="D.N.C." x="53.34" y="-10.16" length="middle" direction="nc" rot="R180"/>
+<pin name="VDD" x="53.34" y="-7.62" length="middle" direction="pwr" rot="R180"/>
+<pin name="SLAVE_SDA" x="53.34" y="-5.08" length="middle" direction="pas" rot="R180"/>
+<pin name="SLAVE_SCL" x="53.34" y="-2.54" length="middle" direction="pas" rot="R180"/>
+<pin name="EPAD" x="53.34" y="0" length="middle" direction="pwr" rot="R180"/>
+<wire x1="7.62" y1="5.08" x2="7.62" y2="-35.56" width="0.1524" layer="94"/>
+<wire x1="7.62" y1="-35.56" x2="48.26" y2="-35.56" width="0.1524" layer="94"/>
+<wire x1="48.26" y1="-35.56" x2="48.26" y2="5.08" width="0.1524" layer="94"/>
+<wire x1="48.26" y1="5.08" x2="7.62" y2="5.08" width="0.1524" layer="94"/>
+<text x="23.2156" y="9.1186" size="2.0828" layer="95" ratio="6" rot="SR0">&gt;Name</text>
+<text x="22.5806" y="6.5786" size="2.0828" layer="96" ratio="6" rot="SR0">&gt;Value</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -41970,6 +42127,52 @@ Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LE
 <attribute name="MP" value="KMR421GULCLFS"/>
 <attribute name="PACKAGE" value="None"/>
 <attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/KMR421GULCLFS/?ref=eda"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="MAX32664GTGA+" prefix="U">
+<gates>
+<gate name="A" symbol="MAX32664GTGA+" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="21-100264_90-100089_MXM">
+<connects>
+<connect gate="A" pin="32KIN" pad="9"/>
+<connect gate="A" pin="32KOUT" pad="8"/>
+<connect gate="A" pin="ACCEL_INT" pad="19"/>
+<connect gate="A" pin="D.N.C." pad="21"/>
+<connect gate="A" pin="D.N.C._2" pad="2"/>
+<connect gate="A" pin="D.N.C._3" pad="4"/>
+<connect gate="A" pin="D.N.C._4" pad="5"/>
+<connect gate="A" pin="D.N.C._5" pad="16"/>
+<connect gate="A" pin="D.N.C._6" pad="17"/>
+<connect gate="A" pin="D.N.C._7" pad="20"/>
+<connect gate="A" pin="EPAD" pad="25"/>
+<connect gate="A" pin="HR_INT" pad="18"/>
+<connect gate="A" pin="MFIO" pad="1"/>
+<connect gate="A" pin="N.C." pad="15"/>
+<connect gate="A" pin="N.C._2" pad="3"/>
+<connect gate="A" pin="RSTN" pad="6"/>
+<connect gate="A" pin="SENSOR_SCL" pad="14"/>
+<connect gate="A" pin="SENSOR_SDA" pad="13"/>
+<connect gate="A" pin="SLAVE_SCL" pad="24"/>
+<connect gate="A" pin="SLAVE_SDA" pad="23"/>
+<connect gate="A" pin="VCORE" pad="12"/>
+<connect gate="A" pin="VDD" pad="22"/>
+<connect gate="A" pin="VDD_2" pad="11"/>
+<connect gate="A" pin="VSS" pad="10"/>
+<connect gate="A" pin="VSS_2" pad="7"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="BUILT_BY" value="EMA_Rebekah" constant="no"/>
+<attribute name="COPYRIGHT" value="Copyright (C) 2018 Accelerated Designs. All rights reserved" constant="no"/>
+<attribute name="MANUFACTURER_PART_NUMBER" value="MAX32664GTGA+" constant="no"/>
+<attribute name="REVISION" value="2" constant="no"/>
+<attribute name="SOURCELIBRARY" value="Maxim_2020-02-10" constant="no"/>
+<attribute name="VENDOR" value="Maxim Integrated Products" constant="no"/>
 </technology>
 </technologies>
 </device>
