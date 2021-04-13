@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'dart:async';
 
 void main() {
   runApp(MyApp());
@@ -38,25 +41,48 @@ class _LineChartSample2State extends State<LineChartSample2> {
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
   ];
-
+  var rng = new Random();
   bool showAvg = false;
+  late Timer _timer;
+  List<FlSpot> datapoints = List.empty();
+
+  @override
+  initState() {
+    super.initState();
+    // start timer
+    _timer = new Timer.periodic(Duration(seconds: 1), (timer) {
+      print("test");
+      setState(() {
+        datapoints = List.generate(101, (i) => (i - 50) / 10)
+            .map((x) => FlSpot(x, sin(x) * rng.nextDouble()))
+            .toList();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
         AspectRatio(
-          aspectRatio: 1.70,
+          aspectRatio: 2,
           child: Container(
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(18),
+                  Radius.circular(10),
                 ),
                 color: Color(0xff232d37)),
             child: Padding(
-              padding: const EdgeInsets.only(right: 18.0, left: 12.0, top: 24, bottom: 12),
+              padding: const EdgeInsets.only(
+                  right: 18.0, left: 12.0, top: 24, bottom: 12),
               child: LineChart(
-                showAvg ? avgData() : mainData(),
+                showAvg ? avgData() : mainData(datapoints),
               ),
             ),
           ),
@@ -73,7 +99,9 @@ class _LineChartSample2State extends State<LineChartSample2> {
             child: Text(
               'avg',
               style: TextStyle(
-                  fontSize: 12, color: showAvg ? Colors.white.withOpacity(0.5) : Colors.white),
+                  fontSize: 12,
+                  color:
+                      showAvg ? Colors.white.withOpacity(0.5) : Colors.white),
             ),
           ),
         ),
@@ -81,7 +109,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
     );
   }
 
-  LineChartData mainData() {
+  LineChartData mainData(List<FlSpot> datapoints) {
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -104,18 +132,12 @@ class _LineChartSample2State extends State<LineChartSample2> {
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (value) =>
-              const TextStyle(color: Color(0xff68737d), fontWeight: FontWeight.bold, fontSize: 16),
+          getTextStyles: (value) => const TextStyle(
+              color: Color(0xff68737d),
+              fontWeight: FontWeight.bold,
+              fontSize: 16),
           getTitles: (value) {
-            switch (value.toInt()) {
-              case 2:
-                return 'MAR';
-              case 5:
-                return 'JUN';
-              case 8:
-                return 'SEP';
-            }
-            return '';
+            return value.toString();
           },
           margin: 8,
         ),
@@ -127,47 +149,33 @@ class _LineChartSample2State extends State<LineChartSample2> {
             fontSize: 15,
           ),
           getTitles: (value) {
-            switch (value.toInt()) {
-              case 1:
-                return '10k';
-              case 3:
-                return '30k';
-              case 5:
-                return '50k';
-            }
-            return '';
+            return value.toString();
           },
           reservedSize: 28,
           margin: 12,
         ),
       ),
-      borderData:
-          FlBorderData(show: true, border: Border.all(color: const Color(0xff37434d), width: 1)),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
+      borderData: FlBorderData(
+          show: true,
+          border: Border.all(color: const Color(0xff37434d), width: 1)),
+      minX: -10,
+      maxX: 10,
+      minY: -1,
+      maxY: 1,
       lineBarsData: [
         LineChartBarData(
-          spots: [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
+          spots: datapoints,
           isCurved: true,
           colors: gradientColors,
-          barWidth: 5,
+          barWidth: 2,
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
           ),
           belowBarData: BarAreaData(
-            show: true,
-            colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+            show: false,
+            colors:
+                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
           ),
         ),
       ],
@@ -198,8 +206,10 @@ class _LineChartSample2State extends State<LineChartSample2> {
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (value) =>
-              const TextStyle(color: Color(0xff68737d), fontWeight: FontWeight.bold, fontSize: 16),
+          getTextStyles: (value) => const TextStyle(
+              color: Color(0xff68737d),
+              fontWeight: FontWeight.bold,
+              fontSize: 16),
           getTitles: (value) {
             switch (value.toInt()) {
               case 2:
@@ -235,8 +245,9 @@ class _LineChartSample2State extends State<LineChartSample2> {
           margin: 12,
         ),
       ),
-      borderData:
-          FlBorderData(show: true, border: Border.all(color: const Color(0xff37434d), width: 1)),
+      borderData: FlBorderData(
+          show: true,
+          border: Border.all(color: const Color(0xff37434d), width: 1)),
       minX: 0,
       maxX: 11,
       minY: 0,
@@ -253,9 +264,9 @@ class _LineChartSample2State extends State<LineChartSample2> {
             FlSpot(11, 3.44),
           ],
           isCurved: true,
-          colors: [ 
+          colors: [
             Color(0xff67727d),
-             Color(0xff67727d),
+            Color(0xff67727d),
           ],
           barWidth: 5,
           isStrokeCapRound: true,
@@ -263,15 +274,14 @@ class _LineChartSample2State extends State<LineChartSample2> {
             show: false,
           ),
           belowBarData: BarAreaData(show: true, colors: [
-             Color(0xff67727d),
-             Color(0xff67727d),
+            Color(0xff67727d),
+            Color(0xff67727d),
           ]),
         ),
       ],
     );
   }
 }
-
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
