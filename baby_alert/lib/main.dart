@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:async';
+import 'package:flutter_blue/flutter_blue.dart';
 
 void main() {
   runApp(MyApp());
@@ -45,6 +46,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
   bool showAvg = false;
   late Timer _timer;
   List<FlSpot> datapoints = List.empty();
+  FlutterBlue flutterBlue = FlutterBlue.instance;
 
   @override
   initState() {
@@ -58,6 +60,16 @@ class _LineChartSample2State extends State<LineChartSample2> {
             .toList();
       });
     });
+
+    flutterBlue.startScan(timeout: Duration(seconds: 4));
+
+    flutterBlue.scanResults.listen((results) {
+      // do something with scan results
+      for (ScanResult r in results) {
+        print('${r.device.name} found! rssi: ${r.rssi}');
+      }
+    });
+    flutterBlue.stopScan();
   }
 
   @override
