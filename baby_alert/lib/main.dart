@@ -66,16 +66,15 @@ class _LineChartSample2State extends State<LineChartSample2> {
     flutterBlue.scanResults.listen((results) {
       // do something with scan results
       for (ScanResult r in results) {
-        if (r.device.id.id == 'E4:5A:83:1B:79:DD')
-        {
+        if (r.device.id.id == 'EC:E3:26:B6:EA:A0') {
           print("found device");
           bleDevice = r.device;
           connectDevice(bleDevice);
+          flutterBlue.stopScan();
           break;
         }
       }
     });
-    flutterBlue.stopScan();
   }
 
   @override
@@ -85,37 +84,31 @@ class _LineChartSample2State extends State<LineChartSample2> {
     super.dispose();
   }
 
-  void updateHeartRate(double val)
-  {
+  void updateHeartRate(double val) {}
 
-  }
-
-  Future<void> connectDevice(BluetoothDevice dev)  async {
+  Future<void> connectDevice(BluetoothDevice dev) async {
     await dev.connect();
     print("connected");
     List<BluetoothService> services = await dev.discoverServices();
     services.forEach((service) {
       print('service=${service.uuid.toString()}');
-      if (service.uuid.toString() == '00001533-1412-efde-1523-785feabcd123')
-        {
-          print("found service");
-          for(var char in service.characteristics)
-          {
-              if (char.uuid.toString() == '00001535-1412-efde-1523-785feabcd123')
-                {
-                  char.setNotifyValue(true).whenComplete(() =>
-                      char.value.listen((event) {
-                        updateHeartRate();
-                        print(event.length);
-                      });
-                  });
-                }
+      if (service.uuid.toString() == '0000180d-0000-1000-8000-00805f9b34fb') {
+        print("found heart rate service");
+
+        for (var char in service.characteristics) {
+          print('char=${char.uuid.toString()}');
+          if (char.uuid.toString() == '00002a37-0000-1000-8000-00805f9b34fb') {
+            char.setNotifyValue(true).whenComplete(() {
+              char.value.listen((event) {
+                print(event.length);
+              });
+            });
           }
         }
+      }
       // do something with service
     });
- }
-
+  }
 
   @override
   Widget build(BuildContext context) {
