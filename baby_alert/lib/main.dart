@@ -47,13 +47,13 @@ class _LineChartSample2State extends State<LineChartSample2> {
   late Timer _timer;
   List<FlSpot> datapoints = List.empty();
   FlutterBlue flutterBlue = FlutterBlue.instance;
+  late BluetoothDevice bleDevice;
 
   @override
   initState() {
     super.initState();
     // start timer
     _timer = new Timer.periodic(Duration(seconds: 1), (timer) {
-      print("test");
       setState(() {
         datapoints = List.generate(101, (i) => (i - 50) / 10)
             .map((x) => FlSpot(x, sin(x) * rng.nextDouble()))
@@ -61,12 +61,18 @@ class _LineChartSample2State extends State<LineChartSample2> {
       });
     });
 
-    flutterBlue.startScan(timeout: Duration(seconds: 4));
+    flutterBlue.startScan(timeout: Duration(seconds: 5));
 
     flutterBlue.scanResults.listen((results) {
       // do something with scan results
       for (ScanResult r in results) {
-        print('${r.device.name} found! rssi: ${r.rssi}');
+        if (r.device.id.id == 'E4:5A:83:1B:79:DD')
+        {
+          print("found device");
+          bleDevice = r.device;
+          connectDevice(bleDevice);
+          break;
+        }
       }
     });
     flutterBlue.stopScan();
@@ -77,6 +83,33 @@ class _LineChartSample2State extends State<LineChartSample2> {
     _timer.cancel();
     super.dispose();
   }
+
+  Future<void> connectDevice(BluetoothDevice dev)  async {
+    await dev.connect();
+    print("connected");
+    List<BluetoothService> services = await dev.discoverServices();
+    services.forEach((service) {
+      print('service=${service.uuid.toString()}');
+      if (service.uuid.toString() == '00001533-1412-efde-1523-785feabcd123')
+        {
+          print("found service");
+          for(var char in service.characteristics)
+          {
+              if (char.uuid.toString() == '00001535-1412-efde-1523-785feabcd123')
+                {
+                  char.setNotifyValue(true).whenComplete(() =>
+                      char.value.listen((event) {
+                        print(event.length);
+                      });
+                  });
+                }
+          }
+        }
+      // do something with service
+    });
+    await dev.disconnect();
+  }
+
 
   @override
   Widget build(BuildContext context) {
