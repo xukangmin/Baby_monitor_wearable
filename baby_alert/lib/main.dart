@@ -81,7 +81,13 @@ class _LineChartSample2State extends State<LineChartSample2> {
   @override
   void dispose() {
     _timer.cancel();
+    bleDevice.disconnect();
     super.dispose();
+  }
+
+  void updateHeartRate(double val)
+  {
+
   }
 
   Future<void> connectDevice(BluetoothDevice dev)  async {
@@ -99,6 +105,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
                 {
                   char.setNotifyValue(true).whenComplete(() =>
                       char.value.listen((event) {
+                        updateHeartRate();
                         print(event.length);
                       });
                   });
@@ -107,8 +114,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
         }
       // do something with service
     });
-    await dev.disconnect();
-  }
+ }
 
 
   @override
