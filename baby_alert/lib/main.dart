@@ -46,8 +46,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
   bool showAvg = false;
   late Timer _timer;
   List<FlSpot> datapoints = List.empty();
-  FlutterBlue flutterBlue = FlutterBlue.instance;
-  late BluetoothDevice bleDevice;
+
 
   @override
   initState() {
@@ -60,55 +59,16 @@ class _LineChartSample2State extends State<LineChartSample2> {
             .toList();
       });
     });
-
-    flutterBlue.startScan(timeout: Duration(seconds: 5));
-
-    flutterBlue.scanResults.listen((results) {
-      // do something with scan results
-      for (ScanResult r in results) {
-        if (r.device.id.id == 'EC:E3:26:B6:EA:A0') {
-          print("found device");
-          bleDevice = r.device;
-          connectDevice(bleDevice);
-          flutterBlue.stopScan();
-          break;
-        }
-      }
-    });
   }
 
   @override
   void dispose() {
     _timer.cancel();
-    bleDevice.disconnect();
+
     super.dispose();
   }
 
-  void updateHeartRate(double val) {}
 
-  Future<void> connectDevice(BluetoothDevice dev) async {
-    await dev.connect();
-    print("connected");
-    List<BluetoothService> services = await dev.discoverServices();
-    services.forEach((service) {
-      print('service=${service.uuid.toString()}');
-      if (service.uuid.toString() == '0000180d-0000-1000-8000-00805f9b34fb') {
-        print("found heart rate service");
-
-        for (var char in service.characteristics) {
-          print('char=${char.uuid.toString()}');
-          if (char.uuid.toString() == '00002a37-0000-1000-8000-00805f9b34fb') {
-            char.setNotifyValue(true).whenComplete(() {
-              char.value.listen((event) {
-                print(event.length);
-              });
-            });
-          }
-        }
-      }
-      // do something with service
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -347,6 +307,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  FlutterBlue flutterBlue = FlutterBlue.instance;
+  late BluetoothDevice bleDevice;
 
   void _incrementCounter() {
     setState(() {
@@ -358,6 +320,66 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
+
+
+  void updateHeartRate(double val) {}
+
+  Future<void> connectDevice(BluetoothDevice dev) async {
+    await dev.connect();
+    print("connected");
+    List<BluetoothService> services = await dev.discoverServices();
+    services.forEach((service) {
+      print('service=${service.uuid.toString()}');
+      if (service.uuid.toString() == '0000180d-0000-1000-8000-00805f9b34fb') {
+        print("found heart rate service");
+
+        for (var char in service.characteristics) {
+          print('char=${char.uuid.toString()}');
+          if (char.uuid.toString() == '00002a37-0000-1000-8000-00805f9b34fb') {
+            print("found characteristic");
+            // char.setNotifyValue(true).whenComplete(() {
+            //   char.value.listen((event) {
+            //     print('event_length=${event.length}');
+            //   });
+            // });
+          }
+        }
+      }
+      // do something with service
+    });
+  }
+
+  @override
+  initState() {
+    super.initState();
+
+    flutterBlue.startScan(timeout: Duration(seconds: 5));
+
+    flutterBlue.scanResults.listen((results) {
+      // do something with scan results
+      for (ScanResult r in results) {
+        print('device=${r.device.id.id}');
+        if (r.device.id.id == 'EC:E3:26:B6:EA:A0') {
+          print("found device");
+          bleDevice = r.device;
+          //connectDevice(bleDevice);
+
+          break;
+        }
+      }
+    });
+
+    flutterBlue.stopScan();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bleDevice.disconnect();
+
+    print("disposed");
+  }
+
 
   @override
   Widget build(BuildContext context) {
