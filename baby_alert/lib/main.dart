@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:async';
-import 'package:flutter_blue/flutter_blue.dart';
+//import 'package:flutter_blue/flutter_blue.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,15 +16,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -32,88 +23,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LineChartSample2 extends StatefulWidget {
-  @override
-  _LineChartSample2State createState() => _LineChartSample2State();
-}
+class LineChartDisplay extends StatelessWidget {
+  LineChartDisplay({
+    required this.dataInput
+  });
 
-class _LineChartSample2State extends State<LineChartSample2> {
-  List<Color> gradientColors = [
+  final List<FlSpot> dataInput;
+  final List<Color> gradientColors = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
   ];
-  var rng = new Random();
-  bool showAvg = false;
-  late Timer _timer;
-  List<FlSpot> datapoints = List.empty();
 
-
-  @override
-  initState() {
-    super.initState();
-    // start timer
-    _timer = new Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        datapoints = List.generate(101, (i) => (i - 50) / 10)
-            .map((x) => FlSpot(x, sin(x) * rng.nextDouble()))
-            .toList();
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-
-    super.dispose();
-  }
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        AspectRatio(
-          aspectRatio: 2,
-          child: Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
-                color: Color(0xff232d37)),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  right: 18.0, left: 12.0, top: 24, bottom: 12),
-              child: LineChart(
-                showAvg ? avgData() : mainData(datapoints),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 60,
-          height: 34,
-          child: TextButton(
-            onPressed: () {
-              setState(() {
-                showAvg = !showAvg;
-              });
-            },
-            child: Text(
-              'avg',
-              style: TextStyle(
-                  fontSize: 12,
-                  color:
-                      showAvg ? Colors.white.withOpacity(0.5) : Colors.white),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  LineChartData mainData(List<FlSpot> datapoints) {
+  LineChartData mainData(List<FlSpot> data) {
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -168,7 +89,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
       maxY: 1,
       lineBarsData: [
         LineChartBarData(
-          spots: datapoints,
+          spots: dataInput,
           isCurved: true,
           colors: gradientColors,
           barWidth: 2,
@@ -179,108 +100,33 @@ class _LineChartSample2State extends State<LineChartSample2> {
           belowBarData: BarAreaData(
             show: false,
             colors:
-                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+            gradientColors.map((color) => color.withOpacity(0.3)).toList(),
           ),
         ),
       ],
     );
   }
 
-  LineChartData avgData() {
-    return LineChartData(
-      lineTouchData: LineTouchData(enabled: false),
-      gridData: FlGridData(
-        show: true,
-        drawHorizontalLine: true,
-        getDrawingVerticalLine: (value) {
-          return FlLine(
-            color: const Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: const Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 22,
-          getTextStyles: (value) => const TextStyle(
-              color: Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 2:
-                return 'MAR';
-              case 5:
-                return 'JUN';
-              case 8:
-                return 'SEP';
-            }
-            return '';
-          },
-          margin: 8,
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          getTextStyles: (value) => const TextStyle(
-            color: Color(0xff67727d),
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        AspectRatio(
+          aspectRatio: 2,
+          child: Container(
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5),
+                ),
+                color: Color(0xff232d37)), // back ground color
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  right: 18.0, left: 12.0, top: 24, bottom: 12),
+              child: LineChart(
+                 mainData(dataInput),
+              ),
+            ),
           ),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 1:
-                return '10k';
-              case 3:
-                return '30k';
-              case 5:
-                return '50k';
-            }
-            return '';
-          },
-          reservedSize: 28,
-          margin: 12,
-        ),
-      ),
-      borderData: FlBorderData(
-          show: true,
-          border: Border.all(color: const Color(0xff37434d), width: 1)),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
-        LineChartBarData(
-          spots: [
-            FlSpot(0, 3.44),
-            FlSpot(2.6, 3.44),
-            FlSpot(4.9, 3.44),
-            FlSpot(6.8, 3.44),
-            FlSpot(8, 3.44),
-            FlSpot(9.5, 3.44),
-            FlSpot(11, 3.44),
-          ],
-          isCurved: true,
-          colors: [
-            Color(0xff67727d),
-            Color(0xff67727d),
-          ],
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: false,
-          ),
-          belowBarData: BarAreaData(show: true, colors: [
-            Color(0xff67727d),
-            Color(0xff67727d),
-          ]),
         ),
       ],
     );
@@ -307,8 +153,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  FlutterBlue flutterBlue = FlutterBlue.instance;
-  late BluetoothDevice bleDevice;
+  // FlutterBlue flutterBlue = FlutterBlue.instance;
+  // late BluetoothDevice bleDevice;
+  final  List<FlSpot>  spots = [
+  FlSpot(0, 3.12),
+  FlSpot(2.6, 5),
+  FlSpot(4.9, 1),
+  FlSpot(6.8, 2),
+  FlSpot(8, 3.44),
+  FlSpot(9.5, 6),
+  FlSpot(11, 13.44),
+  ];
 
   void _incrementCounter() {
     setState(() {
@@ -322,60 +177,60 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
-  void updateHeartRate(double val) {}
-
-  Future<void> connectDevice(BluetoothDevice dev) async {
-    await dev.connect();
-    print("connected");
-    List<BluetoothService> services = await dev.discoverServices();
-    services.forEach((service) {
-      print('service=${service.uuid.toString()}');
-      if (service.uuid.toString() == '0000180d-0000-1000-8000-00805f9b34fb') {
-        print("found heart rate service");
-
-        for (var char in service.characteristics) {
-          print('char=${char.uuid.toString()}');
-          if (char.uuid.toString() == '00002a37-0000-1000-8000-00805f9b34fb') {
-            print("found characteristic");
-            // char.setNotifyValue(true).whenComplete(() {
-            //   char.value.listen((event) {
-            //     print('event_length=${event.length}');
-            //   });
-            // });
-          }
-        }
-      }
-      // do something with service
-    });
-  }
+  // void updateHeartRate(double val) {}
+  //
+  // Future<void> connectDevice(BluetoothDevice dev) async {
+  //   await dev.connect();
+  //   print("connected");
+  //   List<BluetoothService> services = await dev.discoverServices();
+  //   services.forEach((service) {
+  //     print('service=${service.uuid.toString()}');
+  //     if (service.uuid.toString() == '0000180d-0000-1000-8000-00805f9b34fb') {
+  //       print("found heart rate service");
+  //
+  //       for (var char in service.characteristics) {
+  //         print('char=${char.uuid.toString()}');
+  //         if (char.uuid.toString() == '00002a37-0000-1000-8000-00805f9b34fb') {
+  //           print("found characteristic");
+  //           // char.setNotifyValue(true).whenComplete(() {
+  //           //   char.value.listen((event) {
+  //           //     print('event_length=${event.length}');
+  //           //   });
+  //           // });
+  //         }
+  //       }
+  //     }
+  //     // do something with service
+  //   });
+  // }
 
   @override
   initState() {
     super.initState();
 
-    flutterBlue.startScan(timeout: Duration(seconds: 5));
-
-    flutterBlue.scanResults.listen((results) {
-      // do something with scan results
-      for (ScanResult r in results) {
-        print('device=${r.device.id.id}');
-        if (r.device.id.id == 'EC:E3:26:B6:EA:A0') {
-          print("found device");
-          bleDevice = r.device;
-          //connectDevice(bleDevice);
-
-          break;
-        }
-      }
-    });
-
-    flutterBlue.stopScan();
+    // flutterBlue.startScan(timeout: Duration(seconds: 5));
+    //
+    // flutterBlue.scanResults.listen((results) {
+    //   // do something with scan results
+    //   for (ScanResult r in results) {
+    //     print('device=${r.device.id.id}');
+    //     if (r.device.id.id == 'EC:E3:26:B6:EA:A0') {
+    //       print("found device");
+    //       bleDevice = r.device;
+    //       //connectDevice(bleDevice);
+    //
+    //       break;
+    //     }
+    //   }
+    // });
+    //
+    // flutterBlue.stopScan();
   }
 
   @override
   void dispose() {
     super.dispose();
-    bleDevice.disconnect();
+    //bleDevice.disconnect();
 
     print("disposed");
   }
@@ -415,7 +270,9 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            LineChartSample2(),
+            Padding(padding:  const EdgeInsets.only(right: 18.0, left: 12.0, top: 24, bottom: 12),
+              child: LineChartDisplay(dataInput: spots),
+            ),
             Text(
               'You have pushed the button this many times:',
             ),
