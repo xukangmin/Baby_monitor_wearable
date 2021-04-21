@@ -33,11 +33,24 @@ class LineChartDisplay extends StatelessWidget {
   ];
 
   LineChartData mainData(List<FlSpot> data) {
+    late List<double> xdata = List.empty();
+    late List<double> ydata = List.empty();
+    for (var d in data) {
+      xdata.add(d.x);
+      ydata.add(d.y);
+    }
+
     return LineChartData(
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
+        drawHorizontalLine: true,
+        checkToShowHorizontalLine: (value) {
+          //print(value);
+          return true;
+        },
         getDrawingHorizontalLine: (value) {
+          //print(value);
           return FlLine(
             color: const Color(0xff37434d),
             strokeWidth: 1,
@@ -72,19 +85,20 @@ class LineChartDisplay extends StatelessWidget {
             fontSize: 15,
           ),
           getTitles: (value) {
+            print(value);
             return value.toString();
           },
-          reservedSize: 28,
-          margin: 12,
+          reservedSize: 22,
+          margin: 8,
         ),
       ),
       borderData: FlBorderData(
           show: true,
           border: Border.all(color: const Color(0xff37434d), width: 1)),
-      minX: -10,
-      maxX: 10,
-      minY: -1,
-      maxY: 1,
+      minX: 0,
+      maxX: xdata.reduce(max),
+      minY: ydata.reduce(min),
+      maxY: ydata.reduce(max),
       lineBarsData: [
         LineChartBarData(
           spots: dataInput,
@@ -119,7 +133,7 @@ class LineChartDisplay extends StatelessWidget {
                 color: Color(0xff232d37)), // back ground color
             child: Padding(
               padding: const EdgeInsets.only(
-                  right: 18.0, left: 12.0, top: 24, bottom: 12),
+                  right: 18.0, left: 20.0, top: 24, bottom: 12),
               child: LineChart(
                 mainData(dataInput),
               ),
