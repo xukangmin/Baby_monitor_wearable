@@ -16,15 +16,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -309,6 +300,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   FlutterBlue flutterBlue = FlutterBlue.instance;
   late BluetoothDevice bleDevice;
+  late bool foundDev;
+  late Timer _timer;
 
   void _incrementCounter() {
     setState(() {
@@ -337,11 +330,12 @@ class _MyHomePageState extends State<MyHomePage> {
           print('char=${char.uuid.toString()}');
           if (char.uuid.toString() == '00002a37-0000-1000-8000-00805f9b34fb') {
             print("found characteristic");
-            // char.setNotifyValue(true).whenComplete(() {
-            //   char.value.listen((event) {
-            //     print('event_length=${event.length}');
-            //   });
-            // });
+            char.setNotifyValue(true).whenComplete(() {
+              char.value.listen((event) {
+                if (event.length == 2)
+                  print('heart rate=${event[1]}');
+              });
+            });
           }
         }
       }
@@ -353,29 +347,37 @@ class _MyHomePageState extends State<MyHomePage> {
   initState() {
     super.initState();
 
-    flutterBlue.startScan(timeout: Duration(seconds: 5));
+    foundDev = false;
 
-    flutterBlue.scanResults.listen((results) {
-      // do something with scan results
-      for (ScanResult r in results) {
-        print('device=${r.device.id.id}');
-        if (r.device.id.id == 'EC:E3:26:B6:EA:A0') {
-          print("found device");
-          bleDevice = r.device;
-          //connectDevice(bleDevice);
+    // flutterBlue.startScan(timeout: Duration(seconds: 10));
+    //
+    // flutterBlue.scanResults.listen((results) {
+    //   // do something with scan results
+    //   for (ScanResult r in results) {
+    //     print('device=${r.device.id.id}');
+    //     if (r.device.id.id == 'EC:E3:26:B6:EA:A0') {
+    //       print("found device");
+    //       bleDevice = r.device;
+    //       foundDev = true;
+    //       //connectDevice(bleDevice);
+    //       print("stop scan");
+    //       flutterBlue.stopScan().whenComplete(() => {
+    //         if (foundDev)
+    //           connectDevice(bleDevice)
+    //         else
+    //           print("dev not found")
+    //       });
+    //     }
+    //   }
+    // });
 
-          break;
-        }
-      }
-    });
 
-    flutterBlue.stopScan();
   }
 
   @override
   void dispose() {
     super.dispose();
-    bleDevice.disconnect();
+    //bleDevice.disconnect();
 
     print("disposed");
   }
