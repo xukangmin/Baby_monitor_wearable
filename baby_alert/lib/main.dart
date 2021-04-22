@@ -32,14 +32,69 @@ class LineChartDisplay extends StatelessWidget {
     const Color(0xff02d39a),
   ];
 
-  LineChartData mainData(List<FlSpot> data) {
-    late List<double> xdata = List.empty();
-    late List<double> ydata = List.empty();
-    for (var d in data) {
-      xdata.add(d.x);
-      ydata.add(d.y);
+  double getMinValX(List<FlSpot> d)
+  {
+    if (d.isEmpty) return 0;
+    double val = d[0].x;
+
+    for(var v in d)
+    {
+      if (v.x < val){
+        val = v.x;
+      }
     }
 
+    return val;
+  }
+
+  double getMinValY(List<FlSpot> d)
+  {
+    if (d.isEmpty) return 0;
+    double val = d[0].y;
+
+    for(var v in d)
+    {
+      if (v.y < val){
+        val = v.y;
+      }
+    }
+
+    return val;
+  }
+
+
+  double getMaxValY(List<FlSpot> d)
+  {
+    print("called");
+    if (d.isEmpty) return 0;
+    double val = d[0].y;
+
+    for(var v in d)
+    {
+      if (v.y > val){
+        val = v.y;
+      }
+    }
+    print('max_y=$val');
+    return val;
+  }
+
+  double getMaxValX(List<FlSpot> d)
+  {
+    if (d.isEmpty) return 0;
+    double val = d[0].x;
+
+    for(var v in d)
+    {
+      if (v.x > val){
+        val = v.x;
+      }
+    }
+
+    return val;
+  }
+
+  LineChartData mainData(List<FlSpot> data) {
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -85,7 +140,7 @@ class LineChartDisplay extends StatelessWidget {
             fontSize: 15,
           ),
           getTitles: (value) {
-            print(value);
+            //print(value);
             return value.toString();
           },
           reservedSize: 22,
@@ -95,10 +150,10 @@ class LineChartDisplay extends StatelessWidget {
       borderData: FlBorderData(
           show: true,
           border: Border.all(color: const Color(0xff37434d), width: 1)),
-      minX: 0,
-      maxX: xdata.reduce(max),
-      minY: ydata.reduce(min),
-      maxY: ydata.reduce(max),
+      minX: getMinValX(data),
+      maxX: getMaxValX(data),
+      minY: getMinValY(data),
+      maxY: getMaxValY(data),
       lineBarsData: [
         LineChartBarData(
           spots: dataInput,
@@ -167,15 +222,9 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   // FlutterBlue flutterBlue = FlutterBlue.instance;
   // late BluetoothDevice bleDevice;
-  final List<FlSpot> spots = [
-    FlSpot(0, 3.12),
-    FlSpot(2.6, 5),
-    FlSpot(4.9, 1),
-    FlSpot(6.8, 2),
-    FlSpot(8, 3.44),
-    FlSpot(9.5, 6),
-    FlSpot(11, 13.44),
-  ];
+  List<FlSpot> spots = [];
+  late Timer _timer;
+  var rng = new Random();
 
   void _incrementCounter() {
     setState(() {
@@ -219,6 +268,18 @@ class _MyHomePageState extends State<MyHomePage> {
   initState() {
     super.initState();
 
+    _timer = new Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _counter++;
+        var s = new FlSpot(_counter.toDouble() , rng.nextDouble() * 100);
+        if (spots.length > 20)
+        {
+          spots.removeAt(0);
+        }
+
+        spots.add(s);
+      });
+    });
     // flutterBlue.startScan(timeout: Duration(seconds: 5));
     //
     // flutterBlue.scanResults.listen((results) {
