@@ -97,10 +97,14 @@ class LineChartDisplay extends StatelessWidget {
   LineChartData mainData(List<FlSpot> data) {
     return LineChartData(
       gridData: FlGridData(
-        show: true,
+        show: false,
         drawVerticalLine: true,
         drawHorizontalLine: true,
         checkToShowHorizontalLine: (value) {
+          //print(value);
+          return true;
+        },
+        checkToShowVerticalLine: (value) {
           //print(value);
           return true;
         },
@@ -121,7 +125,8 @@ class LineChartDisplay extends StatelessWidget {
       titlesData: FlTitlesData(
         show: true,
         bottomTitles: SideTitles(
-          showTitles: true,
+          showTitles: false,
+          interval: 2,
           reservedSize: 22,
           getTextStyles: (value) => const TextStyle(
               color: Color(0xff68737d),
@@ -134,17 +139,18 @@ class LineChartDisplay extends StatelessWidget {
         ),
         leftTitles: SideTitles(
           showTitles: true,
+          interval: 10,
           getTextStyles: (value) => const TextStyle(
             color: Color(0xff67727d),
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 20,
           ),
           getTitles: (value) {
-            //print(value);
+            //print(value)
             return value.toString();
           },
           reservedSize: 22,
-          margin: 8,
+          margin: 20,
         ),
       ),
       borderData: FlBorderData(
@@ -152,8 +158,8 @@ class LineChartDisplay extends StatelessWidget {
           border: Border.all(color: const Color(0xff37434d), width: 1)),
       minX: getMinValX(data),
       maxX: getMaxValX(data),
-      minY: getMinValY(data),
-      maxY: getMaxValY(data),
+      minY: 40,
+      maxY: 150,
       lineBarsData: [
         LineChartBarData(
           spots: dataInput,
@@ -271,7 +277,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _timer = new Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         _counter++;
-        var s = new FlSpot(_counter.toDouble() , rng.nextDouble() * 100);
+        var s = new FlSpot(_counter.toDouble() , rng.nextDouble() * 50 + 50);
         if (spots.length > 20)
         {
           spots.removeAt(0);
