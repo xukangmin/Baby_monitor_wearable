@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:async';
@@ -15,10 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      theme: ThemeData.dark(),
+      home: MyHomePage(title: 'Baby Monitor'),
     );
   }
 }
@@ -31,6 +30,11 @@ class LineChartDisplay extends StatelessWidget {
   final List<Color> gradientColors = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
+  ];
+
+  final List<Color> gradientColors1 = [
+    const Color(0xffe623cc),
+    const Color(0xffffe67a),
   ];
 
   double getMinValX(List<FlSpot> d)
@@ -95,7 +99,7 @@ class LineChartDisplay extends StatelessWidget {
     return val;
   }
 
-  LineChartData mainData(List<FlSpot> data) {
+  LineChartData mainData(List<FlSpot> hrData, List<FlSpot> sp2Data) {
     return LineChartData(
       gridData: FlGridData(
         show: false,
@@ -157,13 +161,13 @@ class LineChartDisplay extends StatelessWidget {
       borderData: FlBorderData(
           show: true,
           border: Border.all(color: const Color(0xff37434d), width: 1)),
-      minX: getMinValX(data),
-      maxX: getMaxValX(data),
+      minX: getMinValX(hrData),
+      maxX: getMaxValX(hrData),
       minY: 40,
       maxY: 150,
       lineBarsData: [
         LineChartBarData(
-          spots: hrInput,
+          spots: hrData,
           isCurved: true,
           colors: gradientColors,
           barWidth: 2,
@@ -175,6 +179,21 @@ class LineChartDisplay extends StatelessWidget {
             show: false,
             colors:
                 gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+          ),
+        ),
+        LineChartBarData(
+          spots: sp2Data,
+          isCurved: true,
+          colors: gradientColors1,
+          barWidth: 2,
+          isStrokeCapRound: true,
+          dotData: FlDotData(
+            show: false,
+          ),
+          belowBarData: BarAreaData(
+            show: false,
+            colors:
+            gradientColors1.map((color) => color.withOpacity(0.3)).toList(),
           ),
         ),
       ],
@@ -221,7 +240,7 @@ class LineChartDisplay extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 16.0, left: 20.0),
                     child: LineChart(
-                      mainData(hrInput),
+                      mainData(hrInput,sp2Input),
                       swapAnimationDuration: const Duration(milliseconds: 250),
                     ),
                   ),
@@ -258,23 +277,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  double _hr = 0;
+  double _sp2 = 0;
+  String _sensorStatus = "N/A";
   // FlutterBlue flutterBlue = FlutterBlue.instance;
   // late BluetoothDevice bleDevice;
   List<FlSpot> hrData = [];
   List<FlSpot> sp2Data = [];
   late Timer _timer;
   var rng = new Random();
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   // void updateHeartRate(double val) {}
   //
@@ -310,7 +321,8 @@ class _MyHomePageState extends State<MyHomePage> {
     _timer = new Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         _counter++;
-        var hr = new FlSpot(_counter.toDouble() , rng.nextDouble() * 50 + 50);
+        _hr = rng.nextDouble() * 50 + 50;
+        var hr = new FlSpot(_counter.toDouble() , _hr);
         if (hrData.length > 20)
         {
           hrData.removeAt(0);
@@ -318,7 +330,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
         hrData.add(hr);
 
-        var sp2 = new FlSpot(_counter.toDouble() , rng.nextDouble() * 50 + 50);
+        _sp2 = rng.nextDouble() * 10 + 90;
+        var sp2 = new FlSpot(_counter.toDouble(), _sp2);
         if (sp2Data.length > 20)
         {
           sp2Data.removeAt(0);
@@ -351,7 +364,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
     //bleDevice.disconnect();
 
-    print("disposed");
+    print("disposed1");
   }
 
   @override
@@ -394,20 +407,37 @@ class _MyHomePageState extends State<MyHomePage> {
               child: LineChartDisplay(hrInput: hrData, sp2Input: sp2Data),
             ),
             Text(
-              'You have pushed the button this many times:',
+              'Heart Rate:',
+              style: TextStyle(fontSize: 20),
             ),
             Text(
-              '$_counter',
+              _hr.toStringAsFixed(1),
+              style: Theme.of(context).textTheme.headline2,
+            ),
+            Text(
+              'SPO2:',
+              style: TextStyle(fontSize: 20),
+            ),
+            Text(
+              _sp2.toStringAsFixed(1),
+              style: Theme.of(context).textTheme.headline2,
+            ),
+            Text(
+              'Sensor Status:',
+              style: TextStyle(fontSize: 15),
+            ),
+            Text(
+              _sensorStatus,
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<Timer>('_timer', _timer));
   }
 }
