@@ -24,9 +24,10 @@ class MyApp extends StatelessWidget {
 }
 
 class LineChartDisplay extends StatelessWidget {
-  LineChartDisplay({required this.dataInput});
+  LineChartDisplay({required this.hrInput, required this.sp2Input});
 
-  final List<FlSpot> dataInput;
+  final List<FlSpot> hrInput;
+  final List<FlSpot> sp2Input;
   final List<Color> gradientColors = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
@@ -162,7 +163,7 @@ class LineChartDisplay extends StatelessWidget {
       maxY: 150,
       lineBarsData: [
         LineChartBarData(
-          spots: dataInput,
+          spots: hrInput,
           isCurved: true,
           colors: gradientColors,
           barWidth: 2,
@@ -182,26 +183,57 @@ class LineChartDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        AspectRatio(
-          aspectRatio: 2,
-          child: Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-                color: Color(0xff232d37)), // back ground color
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  right: 18.0, left: 20.0, top: 24, bottom: 12),
-              child: LineChart(
-                mainData(dataInput),
-              ),
-            ),
+    return AspectRatio(
+      aspectRatio: 1.23,
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(18)),
+          gradient: LinearGradient(
+            colors: [
+              Color(0xff2c274c),
+              Color(0xff46426c),
+            ],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
           ),
         ),
-      ],
+        child: Stack(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const SizedBox(
+                  height: 4,
+                ),
+                const Text(
+                  'Heart Rate - SPO2 Chart',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 37,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 16.0, left: 20.0),
+                    child: LineChart(
+                      mainData(hrInput),
+                      swapAnimationDuration: const Duration(milliseconds: 250),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -228,7 +260,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   // FlutterBlue flutterBlue = FlutterBlue.instance;
   // late BluetoothDevice bleDevice;
-  List<FlSpot> spots = [];
+  List<FlSpot> hrData = [];
+  List<FlSpot> sp2Data = [];
   late Timer _timer;
   var rng = new Random();
 
@@ -277,13 +310,21 @@ class _MyHomePageState extends State<MyHomePage> {
     _timer = new Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         _counter++;
-        var s = new FlSpot(_counter.toDouble() , rng.nextDouble() * 50 + 50);
-        if (spots.length > 20)
+        var hr = new FlSpot(_counter.toDouble() , rng.nextDouble() * 50 + 50);
+        if (hrData.length > 20)
         {
-          spots.removeAt(0);
+          hrData.removeAt(0);
         }
 
-        spots.add(s);
+        hrData.add(hr);
+
+        var sp2 = new FlSpot(_counter.toDouble() , rng.nextDouble() * 50 + 50);
+        if (sp2Data.length > 20)
+        {
+          sp2Data.removeAt(0);
+        }
+
+        sp2Data.add(sp2);
       });
     });
     // flutterBlue.startScan(timeout: Duration(seconds: 5));
@@ -350,7 +391,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.only(
                   right: 18.0, left: 12.0, top: 24, bottom: 12),
-              child: LineChartDisplay(dataInput: spots),
+              child: LineChartDisplay(hrInput: hrData, sp2Input: sp2Data),
             ),
             Text(
               'You have pushed the button this many times:',
