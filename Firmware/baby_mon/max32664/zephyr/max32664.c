@@ -20,6 +20,8 @@ uint8_t _sampleRate = 100;
 static uint16_t _i2c_addr;
 const struct device *_i2c_device;
 
+struct bioData _bioData;
+
 uint8_t bpmArr[MAXFAST_ARRAY_SIZE];
 uint8_t bpmArrTwo[MAXFAST_ARRAY_SIZE + MAXFAST_EXTENDED_DATA];
 uint8_t senArr[MAX30101_LED_ARRAY];
@@ -486,12 +488,12 @@ struct bioData readBpm(){
 static int max32664_sample_fetch(const struct device *dev,
 				 enum sensor_channel chan)
 {
-  struct bioData _bioData = readBpm();
+  _bioData = readBpm();
 
-  LOG_INF("bpm=%d",  _bioData.heartRate);
-  LOG_INF("confidence=%d",  _bioData.confidence);
-  LOG_INF("oxygen=%d",  _bioData.oxygen);
-  LOG_INF("status=%d",  _bioData.status);
+  // LOG_INF("bpm=%d",  _bioData.heartRate);
+  // LOG_INF("confidence=%d",  _bioData.confidence);
+  // LOG_INF("oxygen=%d",  _bioData.oxygen);
+  // LOG_INF("status=%d",  _bioData.status);
 
 	return 0;
 }
@@ -500,8 +502,27 @@ static int max32664_channel_get(const struct device *dev,
 				enum sensor_channel chan,
 				struct sensor_value *val)
 {
-
-  
+  switch (chan) {
+	case SENSOR_CHAN_HEARTRATE:
+		val->val1 = _bioData.heartRate;
+		val->val2 = 0;
+		break;
+	case SENSOR_CHAN_SPO2:
+		val->val1 = _bioData.oxygen;
+		val->val2 = 0;
+		break;
+	case SENSOR_CHAN_CONFIDENCE:
+		val->val1 = _bioData.confidence;
+		val->val2 = 0;
+		break;
+	case SENSOR_CHAN_HR_STATUS:
+		val->val1 = _bioData.status;
+		val->val2 = 0;
+		break;
+	default:
+		LOG_ERR("Unsupported sensor channel");
+		return -ENOTSUP;
+	}
 
 	return 0;
 }

@@ -6,6 +6,11 @@
 #include <drivers/i2c.h>
 #include <drivers/gpio.h>
 
+#define SENSOR_CHAN_HEARTRATE SENSOR_CHAN_COMMON_COUNT + 1
+#define SENSOR_CHAN_SPO2 SENSOR_CHAN_COMMON_COUNT + 2
+#define SENSOR_CHAN_CONFIDENCE SENSOR_CHAN_COMMON_COUNT + 3
+#define SENSOR_CHAN_HR_STATUS SENSOR_CHAN_COMMON_COUNT + 4
+
 #define WRITE_FIFO_INPUT_BYTE  0x04
 #define DISABLE                0x00
 #define ENABLE                 0x01
@@ -35,7 +40,7 @@
 #define WRITE_SET_THRESHOLD    0x01 //Index Byte for WRITE_INPUT(0x14)
 #define WRITE_EXTERNAL_TO_FIFO 0x00
 
-const uint8_t BIO_ADDRESS = 0x55;
+#define BIO_ADDRESS 0x55
 
 struct bioData {
 
