@@ -1,0 +1,8 @@
+# MAX30101 heart rate sensor
+
+# Copyright (c) 2017, NXP
+# SPDX-License-Identifier: Apache-2.0
+
+config MAX30205
+	bool "MAX30205 Pulse Oximeter and Heart Rate Sensor"
+	depends on I2C

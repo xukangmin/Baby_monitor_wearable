@@ -10,6 +10,13 @@
         rst-gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
         mfio-gpios = <&gpio1 9 GPIO_PULL_UP>;
     };
+
+    max30205@49{
+        status = "okay";
+        compatible = "max,max30205";
+        reg = < 0x49 >;
+        label = "MAX30205";
+    };
 };
 
 &arduino_spi {
