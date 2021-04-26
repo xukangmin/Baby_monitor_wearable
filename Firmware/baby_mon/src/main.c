@@ -193,13 +193,20 @@ void threadA(void *dummy1, void *dummy2, void *dummy3)
 	struct sensor_value spo2;
 	struct sensor_value status;
 	struct sensor_value confidence;
-	
+	struct sensor_value temp;
 	//struct sensor_value red;
 	//struct sensor_value IR;
 	const struct device *dev = device_get_binding(DT_LABEL(DT_INST(0, max_max32664)));
 
 	if (dev == NULL) {
 		printf("Could not get max32664 device\n");
+		return;
+	}
+
+	const struct device *devTemp = device_get_binding(DT_LABEL(DT_INST(0, max_max30205)));
+
+	if (devTemp == NULL) {
+		printf("Could not get max30205 device\n");
 		return;
 	}
 
@@ -232,6 +239,9 @@ void threadA(void *dummy1, void *dummy2, void *dummy3)
 		sensor_channel_get(dev, SENSOR_CHAN_SPO2, &spo2);
 		sensor_channel_get(dev, SENSOR_CHAN_HR_STATUS, &status);
 		sensor_channel_get(dev, SENSOR_CHAN_CONFIDENCE, &confidence);
+
+		sensor_sample_fetch(devTemp);
+		sensor_channel_get(devTemp, SENSOR_CHAN_AMBIENT_TEMP, &temp);
 		//sensor_channel_get(dev, SENSOR_CHAN_IR, &IR);
 		/* Print green LED data*/
 		//printf("red=%d\n", red.val1);
@@ -240,6 +250,8 @@ void threadA(void *dummy1, void *dummy2, void *dummy3)
 		printk("spo2=%d\n",spo2.val1);
 		printk("status=%d\n",status.val1);
 		printk("confidence=%d\n",confidence.val1);
+
+		printk("temp=%g\n",sensor_value_to_double(&temp));
 		/* Heartrate measurements simulation */
 		hrs_notify();
 		tx_data.hr = hr.val1;

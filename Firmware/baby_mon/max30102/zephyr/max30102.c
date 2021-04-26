@@ -17,7 +17,7 @@
 
 static uint16_t _i2c_addr;
 
-const struct device *_i2c_device;
+static struct device *_i2c_device;
 
 static int _activeLEDs = 0;
 

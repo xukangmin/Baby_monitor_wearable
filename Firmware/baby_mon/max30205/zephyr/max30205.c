@@ -12,14 +12,15 @@
 
 
 #define BUFFER_LENGTH 200
+#define N_DECIMAL_POINTS_PRECISION 1000000
 
 static uint16_t _i2c_addr;
 
-const struct device *_i2c_device;
+static struct device *_i2c_device;
 
 static int _activeLEDs = 0;
 
-static sSenseBuf_t* _senseBuf;
+static float* _temperature;
 
 LOG_MODULE_REGISTER(MAX30205, CONFIG_SENSOR_LOG_LEVEL);
 
@@ -70,8 +71,10 @@ uint8_t readReg(uint8_t reg, const void* pBuf, uint8_t size)
 static int max30205_sample_fetch(const struct device *dev,
 				 enum sensor_channel chan)
 {
-  //LOG_INF("enter heart rate calculation");
-  //getNewData();
+	uint8_t readRaw[2] = {0};
+    readReg(MAX30205_TEMPERATURE, readRaw ,2); // read two bytes
+	int16_t raw = readRaw[0] << 8 | readRaw[1];  //combine two bytes
+    *_temperature = raw  * 0.00390625;     // convert to temperature
 
 	return 0;
 }
@@ -83,14 +86,9 @@ static int max30205_channel_get(const struct device *dev,
 
 
 	switch (chan) {
-	case SENSOR_CHAN_RED:
-		val->val1 = _senseBuf->red[_senseBuf->head];
-		val->val2 = 0;
-		break;
-
-	case SENSOR_CHAN_IR:
-		val->val1 = _senseBuf->IR[_senseBuf->head];
-		val->val2 = 0;
+	case SENSOR_CHAN_AMBIENT_TEMP:
+		val->val1 = (int)(*_temperature);
+		val->val2 = ((int)((*_temperature)*N_DECIMAL_POINTS_PRECISION)%N_DECIMAL_POINTS_PRECISION);
 		break;
 	default:
 		LOG_ERR("Unsupported sensor channel");
@@ -116,7 +114,7 @@ static int max30205_init(const struct device *dev)
 	struct max30205_data *data = dev->data;
 
 
-	_senseBuf = &(data->senseBuf);
+	_temperature = &(data->temperature);
 	/* Get the I2C device */
 	data->i2c = device_get_binding(config->i2c_label);
 	if (!data->i2c) {
@@ -126,6 +124,14 @@ static int max30205_init(const struct device *dev)
 
 	_i2c_device = data->i2c;
 	_i2c_addr = config->i2c_addr;
+
+	uint8_t byteTemp = 0x00;
+
+	writeReg(MAX30205_CONFIGURATION, &byteTemp, 1);
+
+	writeReg(MAX30205_THYST, &byteTemp, 1);
+	
+	writeReg(MAX30205_TOS, &byteTemp, 1);
 
 
 	return 0;

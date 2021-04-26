@@ -35,6 +35,6 @@ struct max30205_config {
 
 struct max30205_data {
 	const struct device *i2c;
-	sSenseBuf_t senseBuf;//Buffer for storing multiple groups of array
+  float temperature;
 };
 

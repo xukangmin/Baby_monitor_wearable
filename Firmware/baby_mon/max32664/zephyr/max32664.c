@@ -18,7 +18,7 @@ uint8_t _userSelectedMode;
 uint8_t _sampleRate = 100;
 
 static uint16_t _i2c_addr;
-const struct device *_i2c_device;
+static struct device *_i2c_device;
 
 struct bioData _bioData;
 
