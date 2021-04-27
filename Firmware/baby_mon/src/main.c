@@ -52,7 +52,7 @@
 #define COLOR_WHITE 4
 #define COLOR_ORANGE 4
 
-uint8_t sphr_data[4];
+uint8_t sphr_data[8];
 
 static const struct led_rgb colors[] = {
 	{ .r = 0xff, .g = 0x00, .b = 0x00, }, /* red */
@@ -194,6 +194,8 @@ void threadA(void *dummy1, void *dummy2, void *dummy3)
 	struct sensor_value status;
 	struct sensor_value confidence;
 	struct sensor_value temp;
+	float tempf = 0;
+	uint8_t tempBytes[4];
 	//struct sensor_value red;
 	//struct sensor_value IR;
 	const struct device *dev = device_get_binding(DT_LABEL(DT_INST(0, max_max32664)));
@@ -254,7 +256,7 @@ void threadA(void *dummy1, void *dummy2, void *dummy3)
 		printk("temp1=%d\n",temp.val1);
 		printk("temp2=%d\n",temp.val2);
 
-		printk("temp=%f\n",sensor_value_to_double(&temp));
+		tempf = sensor_value_to_double(&temp);
 		/* Heartrate measurements simulation */
 		hrs_notify();
 		tx_data.hr = hr.val1;
@@ -271,7 +273,9 @@ void threadA(void *dummy1, void *dummy2, void *dummy3)
 		sphr_data[2] = (uint8_t)status.val1;
 		sphr_data[3] = (uint8_t)confidence.val1;
 
-		sphr_notify(sphr_data,4);
+		memcpy(sphr_data + 4, &tempf,sizeof(float));
+		
+		sphr_notify(sphr_data,8);
 	}
 
 }

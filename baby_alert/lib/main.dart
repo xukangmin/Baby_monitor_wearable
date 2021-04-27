@@ -4,14 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:async';
-//import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,14 +36,12 @@ class LineChartDisplay extends StatelessWidget {
     const Color(0xffffe67a),
   ];
 
-  double getMinValX(List<FlSpot> d)
-  {
+  double getMinValX(List<FlSpot> d) {
     if (d.isEmpty) return 0;
     double val = d[0].x;
 
-    for(var v in d)
-    {
-      if (v.x < val){
+    for (var v in d) {
+      if (v.x < val) {
         val = v.x;
       }
     }
@@ -52,14 +49,12 @@ class LineChartDisplay extends StatelessWidget {
     return val;
   }
 
-  double getMinValY(List<FlSpot> d)
-  {
+  double getMinValY(List<FlSpot> d) {
     if (d.isEmpty) return 0;
     double val = d[0].y;
 
-    for(var v in d)
-    {
-      if (v.y < val){
+    for (var v in d) {
+      if (v.y < val) {
         val = v.y;
       }
     }
@@ -67,16 +62,13 @@ class LineChartDisplay extends StatelessWidget {
     return val;
   }
 
-
-  double getMaxValY(List<FlSpot> d)
-  {
+  double getMaxValY(List<FlSpot> d) {
     print("called");
     if (d.isEmpty) return 0;
     double val = d[0].y;
 
-    for(var v in d)
-    {
-      if (v.y > val){
+    for (var v in d) {
+      if (v.y > val) {
         val = v.y;
       }
     }
@@ -84,14 +76,12 @@ class LineChartDisplay extends StatelessWidget {
     return val;
   }
 
-  double getMaxValX(List<FlSpot> d)
-  {
+  double getMaxValX(List<FlSpot> d) {
     if (d.isEmpty) return 0;
     double val = d[0].x;
 
-    for(var v in d)
-    {
-      if (v.x > val){
+    for (var v in d) {
+      if (v.x > val) {
         val = v.x;
       }
     }
@@ -193,7 +183,7 @@ class LineChartDisplay extends StatelessWidget {
           belowBarData: BarAreaData(
             show: false,
             colors:
-            gradientColors1.map((color) => color.withOpacity(0.3)).toList(),
+                gradientColors1.map((color) => color.withOpacity(0.3)).toList(),
           ),
         ),
       ],
@@ -240,7 +230,7 @@ class LineChartDisplay extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 16.0, left: 20.0),
                     child: LineChart(
-                      mainData(hrInput,sp2Input),
+                      mainData(hrInput, sp2Input),
                       swapAnimationDuration: const Duration(milliseconds: 250),
                     ),
                   ),
@@ -280,8 +270,8 @@ class _MyHomePageState extends State<MyHomePage> {
   double _hr = 0;
   double _sp2 = 0;
   String _sensorStatus = "N/A";
-  // FlutterBlue flutterBlue = FlutterBlue.instance;
-  // late BluetoothDevice bleDevice;
+  FlutterBlue flutterBlue = FlutterBlue.instance;
+  late BluetoothDevice bleDevice;
   List<FlSpot> hrData = [];
   List<FlSpot> sp2Data = [];
   late Timer _timer;
@@ -289,80 +279,79 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // void updateHeartRate(double val) {}
   //
-  // Future<void> connectDevice(BluetoothDevice dev) async {
-  //   await dev.connect();
-  //   print("connected");
-  //   List<BluetoothService> services = await dev.discoverServices();
-  //   services.forEach((service) {
-  //     print('service=${service.uuid.toString()}');
-  //     if (service.uuid.toString() == '0000180d-0000-1000-8000-00805f9b34fb') {
-  //       print("found heart rate service");
-  //
-  //       for (var char in service.characteristics) {
-  //         print('char=${char.uuid.toString()}');
-  //         if (char.uuid.toString() == '00002a37-0000-1000-8000-00805f9b34fb') {
-  //           print("found characteristic");
-  //           // char.setNotifyValue(true).whenComplete(() {
-  //           //   char.value.listen((event) {
-  //           //     print('event_length=${event.length}');
-  //           //   });
-  //           // });
-  //         }
-  //       }
-  //     }
-  //     // do something with service
-  //   });
-  // }
+  Future<void> connectDevice(BluetoothDevice dev) async {
+    await dev.connect();
+    print("connected");
+    List<BluetoothService> services = await dev.discoverServices();
+    services.forEach((service) {
+      print('service=${service.uuid.toString()}');
+      if (service.uuid.toString() == '0000180d-0000-1000-8000-00805f9b34fb') {
+        print("found heart rate service");
+
+        for (var char in service.characteristics) {
+          print('char=${char.uuid.toString()}');
+          if (char.uuid.toString() == '00002a37-0000-1000-8000-00805f9b34fb') {
+            print("found characteristic");
+            char.setNotifyValue(true).whenComplete(() {
+              char.value.listen((event) {
+                print('event_length=${event.length}');
+                // update char here
+              });
+            });
+          }
+        }
+      }
+      // do something with service
+    });
+  }
 
   @override
   initState() {
     super.initState();
 
-    _timer = new Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        _counter++;
-        _hr = rng.nextDouble() * 50 + 50;
-        var hr = new FlSpot(_counter.toDouble() , _hr);
-        if (hrData.length > 20)
-        {
-          hrData.removeAt(0);
-        }
-
-        hrData.add(hr);
-
-        _sp2 = rng.nextDouble() * 10 + 90;
-        var sp2 = new FlSpot(_counter.toDouble(), _sp2);
-        if (sp2Data.length > 20)
-        {
-          sp2Data.removeAt(0);
-        }
-
-        sp2Data.add(sp2);
-      });
-    });
-    // flutterBlue.startScan(timeout: Duration(seconds: 5));
-    //
-    // flutterBlue.scanResults.listen((results) {
-    //   // do something with scan results
-    //   for (ScanResult r in results) {
-    //     print('device=${r.device.id.id}');
-    //     if (r.device.id.id == 'EC:E3:26:B6:EA:A0') {
-    //       print("found device");
-    //       bleDevice = r.device;
-    //       //connectDevice(bleDevice);
-    //
-    //       break;
+    // _timer = new Timer.periodic(Duration(seconds: 1), (timer) {
+    //   setState(() {
+    //     _counter++;
+    //     _hr = rng.nextDouble() * 50 + 50;
+    //     var hr = new FlSpot(_counter.toDouble(), _hr);
+    //     if (hrData.length > 20) {
+    //       hrData.removeAt(0);
     //     }
-    //   }
+
+    //     hrData.add(hr);
+
+    //     _sp2 = rng.nextDouble() * 10 + 90;
+    //     var sp2 = new FlSpot(_counter.toDouble(), _sp2);
+    //     if (sp2Data.length > 20) {
+    //       sp2Data.removeAt(0);
+    //     }
+
+    //     sp2Data.add(sp2);
+    //   });
     // });
-    //
-    // flutterBlue.stopScan();
+    flutterBlue.startScan(timeout: Duration(seconds: 5));
+
+    flutterBlue.scanResults.listen((results) {
+      // do something with scan results
+      for (ScanResult r in results) {
+        print('device=${r.device.id.id}');
+        if (r.device.id.id == 'EC:E3:26:B6:EA:A0') {
+          print("found device");
+          bleDevice = r.device;
+          //connectDevice(bleDevice);
+
+          break;
+        }
+      }
+    });
+
+    flutterBlue.stopScan();
   }
 
   @override
   void dispose() {
     super.dispose();
-    //bleDevice.disconnect();
+    bleDevice.disconnect();
 
     print("disposed1");
   }
@@ -435,6 +424,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
