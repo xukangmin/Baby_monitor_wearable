@@ -251,7 +251,10 @@ void threadA(void *dummy1, void *dummy2, void *dummy3)
 		printk("status=%d\n",status.val1);
 		printk("confidence=%d\n",confidence.val1);
 
-		printk("temp=%g\n",sensor_value_to_double(&temp));
+		printk("temp1=%d\n",temp.val1);
+		printk("temp2=%d\n",temp.val2);
+
+		printk("temp=%f\n",sensor_value_to_double(&temp));
 		/* Heartrate measurements simulation */
 		hrs_notify();
 		tx_data.hr = hr.val1;

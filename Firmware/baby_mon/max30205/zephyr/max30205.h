@@ -8,7 +8,7 @@
 #include <drivers/i2c.h>
 #include <drivers/gpio.h>
 
-#define MAX30205_ADDRESS1        0x49  // 8bit address converted to 7bit
+#define MAX30205_ADDRESS1        0x48  // 8bit address converted to 7bit
 #define MAX30205_ADDRESS2        0x48  // 8bit address converted to 7bit
 
 // Registers

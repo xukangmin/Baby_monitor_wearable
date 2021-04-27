@@ -11,10 +11,10 @@
         mfio-gpios = <&gpio1 9 GPIO_PULL_UP>;
     };
 
-    max30205@49{
+    max30205@48{
         status = "okay";
         compatible = "max,max30205";
-        reg = < 0x49 >;
+        reg = < 0x48 >;
         label = "MAX30205";
     };
 };
