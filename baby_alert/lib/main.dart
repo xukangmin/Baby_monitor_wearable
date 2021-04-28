@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:async';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'dart:typed_data';
 
 void main() {
   runApp(MyApp());
@@ -285,15 +286,34 @@ class _MyHomePageState extends State<MyHomePage> {
     List<BluetoothService> services = await dev.discoverServices();
     services.forEach((service) {
       print('service=${service.uuid.toString()}');
-      if (service.uuid.toString() == '0000180d-0000-1000-8000-00805f9b34fb') {
+      if (service.uuid.toString() == '12345678-1234-5678-1234-56789abcdef0') {
         print("found heart rate service");
 
         for (var char in service.characteristics) {
           print('char=${char.uuid.toString()}');
-          if (char.uuid.toString() == '00002a37-0000-1000-8000-00805f9b34fb') {
+          if (char.uuid.toString() == '12345678-1234-5678-1234-56789abcdef1') {
             print("found characteristic");
             char.setNotifyValue(true).whenComplete(() {
               char.value.listen((event) {
+                if (event.length == 8) {
+                  print('heart rate = ${event[0]}');
+                  print('spo2 = ${event[1]}');
+                  print('status = ${event[2]}');
+                  print('confidence = ${event[3]}');
+
+                  ByteData fdata = new ByteData(4);
+
+                  fdata.setUint8(0, event[7]);
+
+                  fdata.setUint8(1, event[6]);
+                  fdata.setUint8(2, event[5]);
+                  fdata.setUint8(3, event[4]);
+
+                  var f = fdata.getFloat32(0);
+
+                  print('temp = $f');
+                }
+
                 print('event_length=${event.length}');
                 // update char here
               });
@@ -338,7 +358,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if (r.device.id.id == 'EC:E3:26:B6:EA:A0') {
           print("found device");
           bleDevice = r.device;
-          //connectDevice(bleDevice);
+          connectDevice(bleDevice);
 
           break;
         }
