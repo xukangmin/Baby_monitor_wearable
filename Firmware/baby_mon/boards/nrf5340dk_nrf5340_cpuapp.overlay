@@ -1,7 +1,7 @@
 &i2c1 {
 	status = "okay";
-	sda-gpios = <&gpio0 9 0>;
-	scl-gpios = <&gpio1 2 0>;
+	sda-gpios = <&gpio0 30 0>;
+	scl-gpios = <&gpio0 31 0>;
     max32664@55{
         status = "okay";
         compatible = "max,max32664";
