@@ -600,7 +600,7 @@ static int max32664_init(const struct device *dev)
      LOG_INF("Error configuring sensor.%d", error);
   }
 
-   uint8_t returnByte = readByte3(IDENTITY, READ_MCU_TYPE, NO_WRITE);
+  uint8_t returnByte = readByte3(IDENTITY, READ_MCU_TYPE, NO_WRITE);
 
   LOG_INF("mcu_info=0x%02x",returnByte);
 
