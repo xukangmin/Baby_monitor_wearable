@@ -15,8 +15,7 @@
 extern "C" {
 #endif
 
-void cts_init(void);
-void cts_notify(void);
+void sphr_notify(uint8_t* sphr_data, size_t data_size);
 
 #ifdef __cplusplus
 }
