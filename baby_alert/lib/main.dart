@@ -267,12 +267,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _hr = 0;
+  int _sp2 = 0;
+  int _sensorStatus = 0;
+  int _confidence = 0;
   int _counter = 0;
-  double _hr = 0;
-  double _sp2 = 0;
-  String _sensorStatus = "N/A";
+  double _temp = 0;
   FlutterBlue flutterBlue = FlutterBlue.instance;
   late BluetoothDevice bleDevice;
+  bool isFound = false;
   List<FlSpot> hrData = [];
   List<FlSpot> sp2Data = [];
   late Timer _timer;
@@ -309,9 +312,32 @@ class _MyHomePageState extends State<MyHomePage> {
                   fdata.setUint8(2, event[5]);
                   fdata.setUint8(3, event[4]);
 
-                  var f = fdata.getFloat32(0);
+                  _temp = fdata.getFloat32(0);
 
-                  print('temp = $f');
+                  print('temp = $_temp');
+
+                  setState(() {
+                    _hr = event[0];
+                    _sp2 = event[1];
+                    _sensorStatus = event[2];
+                    _confidence = event[3];
+
+                    if (_sensorStatus == 3 &&
+                        _hr > 40 &&
+                        _hr < 180 &&
+                        _sp2 > 80 &&
+                        _sp2 <= 100) {
+                      // valid data
+                      _counter++;
+                      var hrspot =
+                          new FlSpot(_counter.toDouble(), _hr.toDouble());
+                      hrData.add(hrspot);
+                      var sp2spot =
+                          new FlSpot(_counter.toDouble(), _sp2.toDouble());
+
+                      sp2Data.add(sp2spot);
+                    }
+                  });
                 }
 
                 print('event_length=${event.length}');
@@ -349,7 +375,12 @@ class _MyHomePageState extends State<MyHomePage> {
     //     sp2Data.add(sp2);
     //   });
     // });
-    flutterBlue.startScan(timeout: Duration(seconds: 5));
+    //
+    isFound = false;
+
+    flutterBlue
+        .startScan(timeout: Duration(seconds: 5))
+        .whenComplete(() => {if (isFound) connectDevice(bleDevice)});
 
     flutterBlue.scanResults.listen((results) {
       // do something with scan results
@@ -358,14 +389,12 @@ class _MyHomePageState extends State<MyHomePage> {
         if (r.device.id.id == 'EC:E3:26:B6:EA:A0') {
           print("found device");
           bleDevice = r.device;
-          connectDevice(bleDevice);
+          isFound = true;
 
           break;
         }
       }
     });
-
-    flutterBlue.stopScan();
   }
 
   @override
@@ -436,7 +465,7 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(fontSize: 15),
             ),
             Text(
-              _sensorStatus,
+              _sensorStatus.toString(),
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
