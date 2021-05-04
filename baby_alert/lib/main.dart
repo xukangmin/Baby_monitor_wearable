@@ -318,12 +318,12 @@ class AwsMQTT {
     client.securityContext = securityContext;
     client.setProtocolV311();
 
-    final MqttConnectMessage connMess = MqttConnectMessage()
-        .withClientIdentifier(_clientId)
-        .startClean()
-        .keepAliveFor(30);
+    // final MqttConnectMessage connMess = MqttConnectMessage()
+    //     .withClientIdentifier(_clientId)
+    //     .startClean()
+    //     .keepAliveFor(30);
 
-    client.connectionMessage = connMess;
+    // client.connectionMessage = connMess;
 
     try {
       print('MQTTClientWrapper::Mosquitto client connecting....');
