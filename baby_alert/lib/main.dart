@@ -1,14 +1,36 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:mqtt_client/mqtt_client.dart';
 import 'dart:typed_data';
+
+import 'package:mqtt_client/mqtt_server_client.dart';
 
 void main() {
   runApp(MyApp());
+}
+
+class HealthData {
+  final double value;
+
+  HealthData(this.value);
+
+  Map<String, dynamic> toJson() => {'value': value};
+}
+
+class HealthDataString {
+  final String value;
+
+  HealthDataString(this.value);
+
+  Map<String, dynamic> toJson() => {'value': value};
 }
 
 class MyApp extends StatelessWidget {
@@ -139,7 +161,7 @@ class LineChartDisplay extends StatelessWidget {
           getTextStyles: (value) => const TextStyle(
             color: Color(0xff67727d),
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 15,
           ),
           getTitles: (value) {
             //print(value)
@@ -219,7 +241,7 @@ class LineChartDisplay extends StatelessWidget {
                   'Heart Rate - SPO2 Chart',
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 32,
+                      fontSize: 28,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 2),
                   textAlign: TextAlign.center,
@@ -266,6 +288,73 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+class AwsMQTT {
+  late MqttServerClient client;
+
+  Future<void> init() async {
+    print("init aws mqtt");
+
+    ByteData caData = await rootBundle.load('certs/AmazonRootCA.pem');
+    ByteData certData =
+        await rootBundle.load('certs/awsiot-certificate.pem.crt');
+    ByteData privateKeyData =
+        await rootBundle.load('certs/awsiot-private.pem.key');
+
+    var _iotEndpoint = 'a3e4d2huogr3x6-ats.iot.us-east-1.amazonaws.com';
+    var _clientId = '123123';
+
+    client = MqttServerClient.withPort(_iotEndpoint, _clientId, 8883,
+        maxConnectionAttempts: 5);
+    client.logging(on: true);
+    client.keepAlivePeriod = 20;
+    client.secure = true;
+
+    final securityContext = SecurityContext.defaultContext;
+
+    securityContext.useCertificateChainBytes(certData.buffer.asUint8List());
+    securityContext.setClientAuthoritiesBytes(caData.buffer.asUint8List());
+    securityContext.usePrivateKeyBytes(privateKeyData.buffer.asUint8List());
+
+    client.securityContext = securityContext;
+    client.setProtocolV311();
+
+    final MqttConnectMessage connMess = MqttConnectMessage()
+        .withClientIdentifier(_clientId)
+        .startClean()
+        .keepAliveFor(30);
+
+    client.connectionMessage = connMess;
+
+    try {
+      print('MQTTClientWrapper::Mosquitto client connecting....');
+      await client.connect();
+    } on Exception catch (e) {
+      print('MQTTClientWrapper::client exception - $e');
+      client.disconnect();
+    }
+  }
+
+  awsMQTT() {}
+
+  Future<void> publish(String topic, String msg) async {
+    if (client.connectionStatus!.state == MqttConnectionState.connected) {
+      final builder1 = MqttClientPayloadBuilder();
+
+      builder1.addString(msg);
+
+      client.publishMessage(topic, MqttQos.atLeastOnce, builder1.payload!);
+    } else {
+      print(
+          'MQTTClientWrapper::ERROR Mosquitto client connection failed - disconnecting, status is ${client.connectionStatus}');
+      client.disconnect();
+    }
+  }
+
+  void uninit() {
+    client.disconnect();
+  }
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   int _hr = 0;
   int _sp2 = 0;
@@ -280,9 +369,42 @@ class _MyHomePageState extends State<MyHomePage> {
   List<FlSpot> sp2Data = [];
   late Timer _timer;
   var rng = new Random();
+  String _strBleStatus = 'N/A';
+  String _strSensorStatus = 'N/A';
+  int isInit = 0;
+  AwsMQTT awsClient = new AwsMQTT();
 
-  // void updateHeartRate(double val) {}
-  //
+  Future<int> publishStatus(String status) async {
+    awsClient.publish(
+        'babyAlert/string/sensorStatus', jsonEncode(HealthDataString(status)));
+
+    return 0;
+  }
+
+  Future<int> publishTemp(double temp) async {
+    awsClient.publish(
+        'babyAlert/double/bodyTemp', jsonEncode(HealthData(temp.toDouble())));
+
+    return 0;
+  }
+
+  Future<int> publishData(
+      int hr, int spo2, int sensorStatus, int confidence) async {
+    awsClient.publish(
+        'babyAlert/int/hr', jsonEncode(HealthData(hr.toDouble())));
+
+    awsClient.publish(
+        'babyAlert/int/spo2', jsonEncode(HealthData(spo2.toDouble())));
+
+    awsClient.publish('babyAlert/int/status',
+        jsonEncode(HealthData(sensorStatus.toDouble())));
+
+    awsClient.publish(
+        'babyAlert/int/conf', jsonEncode(HealthData(confidence.toDouble())));
+
+    return 0;
+  }
+
   Future<void> connectDevice(BluetoothDevice dev) async {
     await dev.connect();
     print("connected");
@@ -316,11 +438,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   print('temp = $_temp');
 
+                  publishTemp(_temp);
+
                   setState(() {
                     _hr = event[0];
                     _sp2 = event[1];
                     _sensorStatus = event[2];
                     _confidence = event[3];
+
+                    _strBleStatus = 'Connected';
+
+                    switch (_sensorStatus) {
+                      case 0:
+                        _strSensorStatus = 'No Contact';
+                        break;
+                      case 1:
+                        _strSensorStatus = 'Contact';
+                        break;
+                      case 2:
+                      case 3:
+                        _strSensorStatus = 'Stable';
+                        break;
+                    }
+
+                    publishStatus(_strSensorStatus);
 
                     if (_sensorStatus == 3 &&
                         _hr > 40 &&
@@ -336,12 +477,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           new FlSpot(_counter.toDouble(), _sp2.toDouble());
 
                       sp2Data.add(sp2spot);
+
+                      publishData(_hr, _sp2, _sensorStatus, _confidence);
                     }
                   });
                 }
-
-                print('event_length=${event.length}');
-                // update char here
               });
             });
           }
@@ -378,9 +518,14 @@ class _MyHomePageState extends State<MyHomePage> {
     //
     isFound = false;
 
-    flutterBlue
-        .startScan(timeout: Duration(seconds: 5))
-        .whenComplete(() => {if (isFound) connectDevice(bleDevice)});
+    setState(() {
+      _strBleStatus = 'Scanning';
+    });
+
+    flutterBlue.startScan(timeout: Duration(seconds: 5)).whenComplete(() => {
+          if (isFound)
+            awsClient.init().whenComplete(() => connectDevice(bleDevice))
+        });
 
     flutterBlue.scanResults.listen((results) {
       // do something with scan results
@@ -388,6 +533,9 @@ class _MyHomePageState extends State<MyHomePage> {
         print('device=${r.device.id.id}');
         if (r.device.id.id == 'EC:E3:26:B6:EA:A0') {
           print("found device");
+          setState(() {
+            _strBleStatus = 'Found Device';
+          });
           bleDevice = r.device;
           isFound = true;
 
@@ -401,42 +549,18 @@ class _MyHomePageState extends State<MyHomePage> {
   void dispose() {
     super.dispose();
     bleDevice.disconnect();
-
+    awsClient.uninit();
     print("disposed1");
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
@@ -444,30 +568,70 @@ class _MyHomePageState extends State<MyHomePage> {
                   right: 18.0, left: 12.0, top: 24, bottom: 12),
               child: LineChartDisplay(hrInput: hrData, sp2Input: sp2Data),
             ),
-            Text(
-              'Heart Rate:',
-              style: TextStyle(fontSize: 20),
-            ),
-            Text(
-              _hr.toStringAsFixed(1),
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            Text(
-              'SPO2:',
-              style: TextStyle(fontSize: 20),
-            ),
-            Text(
-              _sp2.toStringAsFixed(1),
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            Text(
-              'Sensor Status:',
-              style: TextStyle(fontSize: 15),
-            ),
-            Text(
-              _sensorStatus.toString(),
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              Column(
+                children: [
+                  Text(
+                    'Heart Rate',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    _hr.toStringAsFixed(0),
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    'Oxygen',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    _sp2.toStringAsFixed(0),
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    'Body Temp',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    _temp.toStringAsFixed(1),
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                ],
+              )
+            ]),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              Column(
+                children: [
+                  Text(
+                    'Sensor Status:',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  Text(
+                    _strSensorStatus,
+                    style: Theme.of(context).textTheme.headline4,
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    'BLE Status:',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  Text(
+                    _strBleStatus,
+                    style: Theme.of(context).textTheme.headline4,
+                  )
+                ],
+              )
+            ])
           ],
         ),
       ),
