@@ -1192,10 +1192,6 @@ Please make sure your boards conform to these design rules.
 <attribute name="DESIGNER" value="Nobody" x="-1.016" y="-23.368" size="1.778" layer="27" display="off"/>
 <attribute name="VERSION" value="v01" x="-1.016" y="-23.368" size="1.778" layer="27" display="off"/>
 </element>
-<element name="FRAME3" library="SparkFun-Aesthetics" package="DUMMY" value="FRAME-LETTERNO_PACKAGE" x="-2.032" y="-24.384" smashed="yes">
-<attribute name="DESIGNER" value="Nobody" x="-2.032" y="-24.384" size="1.778" layer="27" display="off"/>
-<attribute name="VERSION" value="v01" x="-2.032" y="-24.384" size="1.778" layer="27" display="off"/>
-</element>
 <element name="J7" library="graftel-internal-ic" package="1X01_TINY" value="" x="16.6158" y="8.4896" smashed="yes"/>
 <element name="J8" library="graftel-internal-ic" package="1X01_TINY" value="" x="15.8414" y="6.1244" smashed="yes"/>
 <element name="J9" library="graftel-internal-ic" package="1X01_TINY" value="" x="15.0986" y="15.7798" smashed="yes"/>

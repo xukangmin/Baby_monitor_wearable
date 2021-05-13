@@ -3798,7 +3798,6 @@ IPC Nominal Density</description>
 <part name="J9" library="graftel-internal-ic" deviceset="M01" device="TINY"/>
 <part name="J10" library="graftel-internal-ic" deviceset="M01" device="TINY"/>
 <part name="J11" library="graftel-internal-ic" deviceset="M01" device="TINY"/>
-<part name="L1" library="Adafruit Circuit Playground Bluefruit" deviceset="NORDIC_MISC_INDUCTOR" device="_0402_N" value="15nH"/>
 <part name="L2" library="Adafruit Circuit Playground Bluefruit" deviceset="NORDIC_MISC_INDUCTOR" device="_0402_N" value="15nH"/>
 <part name="L3" library="Adafruit Circuit Playground Bluefruit" deviceset="NORDIC_MISC_INDUCTOR" device="_0603_N" value="10uH"/>
 <part name="L4" library="Adafruit Circuit Playground Bluefruit" deviceset="NORDIC_MISC_INDUCTOR" device="_0603_N" value="10uH"/>
@@ -3877,10 +3876,6 @@ IPC Nominal Density</description>
 <attribute name="LAST_DATE_TIME" x="160.02" y="1.27" size="2.54" layer="94" font="vector"/>
 <attribute name="SHEET" x="233.68" y="1.27" size="2.54" layer="94" font="vector"/>
 <attribute name="DRAWING_NAME" x="162.814" y="17.78" size="2.7432" layer="94" font="vector"/>
-</instance>
-<instance part="L1" gate="L$1" x="43.18" y="76.2" smashed="yes" rot="R90">
-<attribute name="NAME" x="38.1" y="78.74" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="48.26" y="78.74" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="L2" gate="L$1" x="43.18" y="63.5" smashed="yes" rot="R90">
 <attribute name="NAME" x="38.1" y="66.04" size="1.778" layer="95" rot="R90"/>
@@ -4022,13 +4017,6 @@ IPC Nominal Density</description>
 <wire x1="76.2" y1="76.2" x2="71.12" y2="76.2" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$5" class="0">
-<segment>
-<pinref part="L4" gate="L$1" pin="1"/>
-<pinref part="L1" gate="L$1" pin="2"/>
-<wire x1="55.88" y1="76.2" x2="50.8" y2="76.2" width="0.1524" layer="91"/>
-</segment>
-</net>
 <net name="N$6" class="0">
 <segment>
 <pinref part="L3" gate="L$1" pin="1"/>
@@ -4045,18 +4033,18 @@ IPC Nominal Density</description>
 </net>
 <net name="N$8" class="0">
 <segment>
-<pinref part="L1" gate="L$1" pin="1"/>
-<wire x1="35.56" y1="76.2" x2="30.48" y2="76.2" width="0.1524" layer="91"/>
 <pinref part="C2" gate="G$1" pin="1"/>
-<wire x1="30.48" y1="76.2" x2="30.48" y2="73.66" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="DECR"/>
 <wire x1="30.48" y1="73.66" x2="35.56" y2="73.66" width="0.1524" layer="91"/>
-<junction x="30.48" y="73.66"/>
 <pinref part="U1" gate="G$1" pin="DECRF"/>
 <wire x1="35.56" y1="73.66" x2="76.2" y2="73.66" width="0.1524" layer="91"/>
 <wire x1="76.2" y1="71.12" x2="35.56" y2="71.12" width="0.1524" layer="91"/>
 <wire x1="35.56" y1="71.12" x2="35.56" y2="73.66" width="0.1524" layer="91"/>
 <junction x="35.56" y="73.66"/>
+<wire x1="30.48" y1="73.66" x2="30.48" y2="76.2" width="0.1524" layer="91"/>
+<junction x="30.48" y="73.66"/>
+<pinref part="L4" gate="L$1" pin="1"/>
+<wire x1="30.48" y1="76.2" x2="55.88" y2="76.2" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$9" class="0">

@@ -1,0 +1,20 @@
+Introducing Baby Guard Acutal Product - 5s
+
+Adult - Demo finger contact / cellphone - 10s
+Adult - Demo web interface / cellphone - 10s
+
+Baby - Demo finger contact / cellphoe - 10s
+Baby - Demo web interface / cellphone - 10s
+
+3D animation - 10s
+
+[Building]
+PCB Design - 5s
+
+PCB Layout - 5s
+
+Placement - 5s
+
+Reballing - 5s
+
+3D printing time laspe 5s
