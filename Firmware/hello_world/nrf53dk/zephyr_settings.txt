@@ -1,1 +1,0 @@
-"DTS_ROOT":"C:/Users/kangmin/zephyrproject/modules/hal/stm32"
